@@ -20,7 +20,6 @@
             --gray-dark: #94A3B8;
             --success: #10B981;
             --gradient: linear-gradient(135deg, var(--primary), var(--primary-light));
-            --gradient-green: linear-gradient(135deg, #059669, #10B981);
         }
         
         * {
@@ -39,7 +38,6 @@
             color: var(--light);
             line-height: 1.6;
             overflow-x: hidden;
-            padding-bottom: 120px; /* Space for sticky cart on mobile */
         }
         
         /* Header & Navigation */
@@ -247,31 +245,43 @@
             align-items: start;
         }
         
-        .consultation-visual {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transform: translateX(-50px);
-        }
-        
-        .consultation-card {
+        .consultation-info {
             background: rgba(30, 41, 59, 0.7);
             border-radius: 20px;
-            padding: 2rem;
+            padding: 2.5rem;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            width: 100%;
-            max-width: 400px;
             opacity: 0;
             transform: translateY(30px);
         }
         
+        .consultation-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .consultation-icon {
+            font-size: 3rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .consultation-title {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .consultation-subtitle {
+            color: var(--gray-dark);
+        }
+        
         .consultation-image {
             width: 100%;
-            height: 250px;
+            height: 200px;
             background: var(--gradient);
             border-radius: 12px;
             margin-bottom: 1.5rem;
@@ -292,7 +302,7 @@
             transition: transform 0.6s;
         }
         
-        .consultation-card:hover .consultation-image:after {
+        .consultation-info:hover .consultation-image:after {
             transform: translateX(100%) rotate(45deg);
         }
         
@@ -303,18 +313,45 @@
             filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
         }
         
-        .consultation-title {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-        }
-        
         .consultation-description {
             color: var(--gray-dark);
             margin-bottom: 2rem;
             line-height: 1.8;
         }
         
-        /* Dynamic Pricing Card */
+        .consultation-features {
+            margin-bottom: 2rem;
+        }
+        
+        .consultation-features h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+        }
+        
+        .consultation-features ul {
+            list-style: none;
+        }
+        
+        .consultation-features li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+        }
+        
+        .consultation-features li:last-child {
+            border-bottom: none;
+        }
+        
+        .consultation-features li span {
+            background: var(--primary);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 1rem;
+        }
+        
+        /* Pricing & Cart Section */
         .pricing-card {
             background: rgba(30, 41, 59, 0.7);
             border-radius: 20px;
@@ -410,6 +447,7 @@
             align-items: center;
             gap: 0.5rem;
             box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+            margin-bottom: 2rem;
         }
         
         .add-to-cart-btn:hover {
@@ -421,105 +459,19 @@
             transform: translateY(0);
         }
         
-        .feature-highlight {
-            margin-top: 2rem;
-        }
-        
-        .feature-highlight h3 {
-            margin-bottom: 1.5rem;
-            font-size: 1.4rem;
-        }
-        
-        .feature-highlight ul {
-            list-style: none;
-        }
-        
-        .feature-highlight li {
-            padding: 0.8rem 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            display: flex;
-            align-items: center;
-        }
-        
-        .feature-highlight li:last-child {
-            border-bottom: none;
-        }
-        
-        .feature-highlight li span {
-            background: var(--primary);
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            margin-right: 1rem;
-        }
-        
-        /* Sticky Cart Drawer */
-        .sticky-cart-drawer {
-            position: fixed;
-            bottom: 0;
-            right: 0;
-            width: 100%;
-            max-width: 450px;
-            background: var(--dark);
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.3);
-            z-index: 1000;
-            transform: translateY(100%);
-            transition: transform 0.4s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-bottom: none;
-        }
-        
-        .sticky-cart-drawer.open {
-            transform: translateY(0);
-        }
-        
-        .cart-drawer-header {
+        .cart-summary {
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 12px;
             padding: 1.5rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
+            margin-bottom: 1.5rem;
         }
         
-        .cart-drawer-title {
-            font-size: 1.3rem;
-            font-weight: 600;
+        .cart-summary-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
-        }
-        
-        .cart-drawer-toggle {
-            background: none;
-            border: none;
-            color: var(--light);
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-        
-        .cart-drawer-toggle.rotated {
-            transform: rotate(180deg);
-        }
-        
-        .cart-drawer-content {
-            padding: 1.5rem;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s ease;
-        }
-        
-        .cart-drawer-content.expanded {
-            max-height: 500px;
-        }
-        
-        .cart-items {
-            margin-bottom: 1.5rem;
-            max-height: 200px;
-            overflow-y: auto;
         }
         
         .cart-item {
@@ -528,6 +480,10 @@
             align-items: center;
             padding: 0.8rem 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .cart-item:last-child {
+            border-bottom: none;
         }
         
         .cart-item-details h4 {
@@ -608,6 +564,33 @@
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
+        }
+        
+        .what-you-get {
+            margin-top: 2rem;
+        }
+        
+        .what-you-get h3 {
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+        
+        .what-you-get ul {
+            list-style: none;
+        }
+        
+        .what-you-get li {
+            padding: 0.8rem 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .what-you-get li span {
+            background: var(--primary);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 1rem;
         }
         
         /* Testimonials */
@@ -859,12 +842,7 @@
                 grid-template-columns: 1fr;
             }
             
-            .sticky-cart-drawer {
-                max-width: 100%;
-                border-radius: 20px 20px 0 0;
-            }
-            
-            .pricing-card {
+            .pricing-card, .consultation-info {
                 padding: 2rem;
             }
         }
@@ -904,24 +882,28 @@
         <p class="section-subtitle">Professional guidance to optimize your business processes and maximize efficiency</p>
         
         <div class="consultation-container">
-            <div class="consultation-info">
-                <div class="consultation-visual">
-                    <div class="consultation-card floating">
-                        <div class="consultation-image">
-                            <img src="https://cdn-icons-png.flaticon.com/512/4054/4054617.png" alt="Business Consultation">
-                        </div>
+            <div class="consultation-info floating">
+                <div class="consultation-header">
+                    <div class="consultation-icon">📈</div>
+                    <div>
                         <h3 class="consultation-title">Business Process Consultation</h3>
-                        <p class="consultation-description">Our expert consultants analyze your current processes and provide actionable recommendations to streamline operations, reduce costs, and improve efficiency.</p>
+                        <p class="consultation-subtitle">Comprehensive analysis and optimization strategy</p>
                     </div>
                 </div>
                 
-                <div class="feature-highlight">
+                <div class="consultation-image">
+                    <img src="https://cdn-icons-png.flaticon.com/512/4054/4054617.png" alt="Business Consultation">
+                </div>
+                
+                <p class="consultation-description">Our expert consultants analyze your current processes and provide actionable recommendations to streamline operations, reduce costs, and improve efficiency. With our unique dynamic pricing model, you determine the value of our expertise based on your business needs and budget.</p>
+                
+                <div class="consultation-features">
                     <h3>Consultation Includes:</h3>
                     
                     <ul>
                         <li>
                             <span></span>
-                            Comprehensive process analysis
+                            Comprehensive process analysis and assessment
                         </li>
                         <li>
                             <span></span>
@@ -937,7 +919,7 @@
                         </li>
                         <li>
                             <span></span>
-                            Ongoing support and follow-up
+                            Ongoing support and follow-up sessions
                         </li>
                     </ul>
                 </div>
@@ -945,9 +927,9 @@
             
             <div class="pricing-card">
                 <div class="pricing-header">
-                    <div class="pricing-icon">📈</div>
+                    <div class="pricing-icon">💰</div>
                     <h3 class="pricing-title">Dynamic Pricing</h3>
-                    <p class="pricing-subtitle">You decide the value of our consultation expertise</p>
+                    <p class="pricing-subtitle">You decide the value of our expertise</p>
                 </div>
                 
                 <div class="price-input-container">
@@ -963,25 +945,45 @@
                     <span>🛒</span>
                 </button>
                 
-                <div class="feature-highlight" style="margin-top: 2rem;">
+                <div class="cart-summary">
+                    <h4 class="cart-summary-title">🛒 Your Consultation</h4>
+                    <div id="cartItems">
+                        <p style="text-align: center; color: var(--gray-dark); padding: 1rem 0;">No consultation added yet</p>
+                    </div>
+                    <div class="cart-total">
+                        <span>Total Investment:</span>
+                        <span id="cartTotal">$0.00</span>
+                    </div>
+                </div>
+                
+                <div class="terms-checkbox">
+                    <input type="checkbox" id="termsCheckbox">
+                    <label for="termsCheckbox" class="terms-text">
+                        I agree to the <a href="#" target="_blank">Terms and Conditions</a> and Service Agreement
+                    </label>
+                </div>
+                
+                <button class="checkout-btn" id="checkoutBtn" disabled>Proceed to Checkout</button>
+                
+                <div class="what-you-get">
                     <h3>What You'll Receive:</h3>
                     
                     <ul>
                         <li>
                             <span></span>
-                            2-hour consultation session
+                            2-hour comprehensive consultation session
                         </li>
                         <li>
                             <span></span>
-                            Detailed analysis report
+                            Detailed analysis report with recommendations
                         </li>
                         <li>
                             <span></span>
-                            Customized action plan
+                            Customized action plan for implementation
                         </li>
                         <li>
                             <span></span>
-                            30-day follow-up support
+                            30-day follow-up support and guidance
                         </li>
                     </ul>
                 </div>
@@ -1046,30 +1048,6 @@
         </div>
     </section>
 
-    <!-- Sticky Cart Drawer -->
-    <div class="sticky-cart-drawer" id="stickyCartDrawer">
-        <div class="cart-drawer-header" id="cartDrawerHeader">
-            <h3 class="cart-drawer-title">🛒 Your Consultation <span id="drawerCartCount">(0)</span></h3>
-            <button class="cart-drawer-toggle" id="cartDrawerToggle">▼</button>
-        </div>
-        <div class="cart-drawer-content" id="cartDrawerContent">
-            <div class="cart-items" id="drawerCartItems">
-                <!-- Cart items will be dynamically inserted here -->
-            </div>
-            <div class="cart-total">
-                <span>Total Investment:</span>
-                <span id="drawerCartTotal">$0.00</span>
-            </div>
-            <div class="terms-checkbox">
-                <input type="checkbox" id="drawerTermsCheckbox">
-                <label for="drawerTermsCheckbox" class="terms-text">
-                    I agree to the <a href="#" target="_blank">Terms and Conditions</a> and Service Agreement
-                </label>
-            </div>
-            <button class="checkout-btn" id="drawerCheckoutBtn" disabled>Proceed to Checkout</button>
-        </div>
-    </div>
-
     <footer>
         <div class="footer-content">
             <div class="footer-about">
@@ -1114,6 +1092,9 @@
             &copy; 2023 CoreTech Business Process Outsourcing. All rights reserved.
         </div>
     </footer>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
 
     <script>
         // Initialize GSAP animations
@@ -1170,8 +1151,8 @@
                 });
             });
             
-            // Consultation card animation
-            gsap.fromTo('.consultation-card', {
+            // Consultation info animation
+            gsap.fromTo('.consultation-info', {
                 opacity: 0,
                 y: 30
             }, {
@@ -1179,23 +1160,7 @@
                 y: 0,
                 duration: 1,
                 scrollTrigger: {
-                    trigger: '.consultation-card',
-                    start: 'top 80%',
-                    end: 'bottom 20%',
-                    toggleActions: 'play none none reverse'
-                }
-            });
-            
-            // Consultation visual animation
-            gsap.fromTo('.consultation-visual', {
-                opacity: 0,
-                x: -50
-            }, {
-                opacity: 1,
-                x: 0,
-                duration: 1,
-                scrollTrigger: {
-                    trigger: '.consultation-visual',
+                    trigger: '.consultation-info',
                     start: 'top 80%',
                     end: 'bottom 20%',
                     toggleActions: 'play none none reverse'
@@ -1261,25 +1226,26 @@
             const cartCount = document.getElementById('cartCount');
             const priceInput = document.getElementById('priceInput');
             const addToCartBtn = document.getElementById('addToCartBtn');
-            const stickyCartDrawer = document.getElementById('stickyCartDrawer');
-            const cartDrawerHeader = document.getElementById('cartDrawerHeader');
-            const cartDrawerToggle = document.getElementById('cartDrawerToggle');
-            const cartDrawerContent = document.getElementById('cartDrawerContent');
-            const drawerCartCount = document.getElementById('drawerCartCount');
-            const drawerCartItems = document.getElementById('drawerCartItems');
-            const drawerCartTotal = document.getElementById('drawerCartTotal');
-            const drawerTermsCheckbox = document.getElementById('drawerTermsCheckbox');
-            const drawerCheckoutBtn = document.getElementById('drawerCheckoutBtn');
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            const termsCheckbox = document.getElementById('termsCheckbox');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            const notification = document.getElementById('notification');
             
             let cart = [];
-            let cartDrawerOpen = false;
             
             // Event Listeners
-            cartIcon.addEventListener('click', toggleCartDrawer);
+            cartIcon.addEventListener('click', function() {
+                if (cart.length === 0) {
+                    showNotification('Your cart is empty', 'error');
+                } else {
+                    showNotification('Your consultation is already in the cart', 'success');
+                }
+            });
+            
             addToCartBtn.addEventListener('click', addToCart);
-            cartDrawerHeader.addEventListener('click', toggleCartDrawer);
-            drawerTermsCheckbox.addEventListener('change', toggleCheckoutButton);
-            drawerCheckoutBtn.addEventListener('click', proceedToCheckout);
+            termsCheckbox.addEventListener('change', toggleCheckoutButton);
+            checkoutBtn.addEventListener('click', proceedToCheckout);
             
             // Cart animation
             const cartTl = gsap.timeline({paused: true});
@@ -1294,25 +1260,6 @@
             });
             
             // Functions
-            function toggleCartDrawer() {
-                if (cart.length === 0) {
-                    showNotification('Your cart is empty', 'error');
-                    return;
-                }
-                
-                cartDrawerOpen = !cartDrawerOpen;
-                
-                if (cartDrawerOpen) {
-                    stickyCartDrawer.classList.add('open');
-                    cartDrawerContent.classList.add('expanded');
-                    cartDrawerToggle.classList.add('rotated');
-                } else {
-                    stickyCartDrawer.classList.remove('open');
-                    cartDrawerContent.classList.remove('expanded');
-                    cartDrawerToggle.classList.remove('rotated');
-                }
-            }
-            
             function addToCart() {
                 const price = parseFloat(priceInput.value);
                 
@@ -1321,24 +1268,17 @@
                     return;
                 }
                 
-                // Add item to cart
+                // Replace item in cart (only one consultation allowed)
                 cart = [{
                     id: Date.now(),
                     name: 'Business Process Consultation',
                     price: price,
-                    type: 'Consultation',
-                    icon: '📈'
+                    type: 'Consultation'
                 }];
                 
                 // Update cart count with animation
                 cartCount.textContent = cart.length;
-                drawerCartCount.textContent = `(${cart.length})`;
                 cartTl.restart();
-                
-                // Show cart drawer automatically
-                if (!cartDrawerOpen) {
-                    toggleCartDrawer();
-                }
                 
                 // Update cart display
                 updateCartDisplay();
@@ -1349,11 +1289,11 @@
             
             function updateCartDisplay() {
                 // Clear current items
-                drawerCartItems.innerHTML = '';
+                cartItems.innerHTML = '';
                 
                 if (cart.length === 0) {
-                    drawerCartItems.innerHTML = '<p style="text-align: center; color: var(--gray-dark); padding: 2rem 0;">Your cart is empty</p>';
-                    drawerCartTotal.textContent = '$0.00';
+                    cartItems.innerHTML = '<p style="text-align: center; color: var(--gray-dark); padding: 1rem 0;">No consultation added yet</p>';
+                    cartTotal.textContent = '$0.00';
                     return;
                 }
                 
@@ -1368,16 +1308,16 @@
                         </div>
                         <div class="cart-item-price">$${item.price.toFixed(2)}</div>
                     `;
-                    drawerCartItems.appendChild(itemElement);
+                    cartItems.appendChild(itemElement);
                 });
                 
                 // Update total
                 const total = cart.reduce((sum, item) => sum + item.price, 0);
-                drawerCartTotal.textContent = `$${total.toFixed(2)}`;
+                cartTotal.textContent = `$${total.toFixed(2)}`;
             }
             
             function toggleCheckoutButton() {
-                drawerCheckoutBtn.disabled = !drawerTermsCheckbox.checked;
+                checkoutBtn.disabled = !termsCheckbox.checked || cart.length === 0;
             }
             
             function proceedToCheckout() {
@@ -1386,14 +1326,14 @@
                     return;
                 }
                 
-                if (!drawerTermsCheckbox.checked) {
+                if (!termsCheckbox.checked) {
                     showNotification('Please agree to the Terms and Conditions', 'error');
                     return;
                 }
                 
                 // Show loading state
-                drawerCheckoutBtn.innerHTML = 'Processing...';
-                drawerCheckoutBtn.disabled = true;
+                checkoutBtn.innerHTML = 'Processing...';
+                checkoutBtn.disabled = true;
                 
                 // Simulate API call to backend
                 setTimeout(() => {
@@ -1401,35 +1341,22 @@
                     // Reset cart
                     cart = [];
                     cartCount.textContent = '0';
-                    drawerCartCount.textContent = '(0)';
-                    drawerTermsCheckbox.checked = false;
-                    drawerCheckoutBtn.disabled = true;
-                    drawerCheckoutBtn.innerHTML = 'Proceed to Checkout';
-                    toggleCartDrawer();
+                    termsCheckbox.checked = false;
+                    checkoutBtn.disabled = true;
+                    checkoutBtn.innerHTML = 'Proceed to Checkout';
                     updateCartDisplay();
                     priceInput.value = '';
                 }, 2000);
             }
             
             function showNotification(message, type) {
-                // Create notification element
-                const notification = document.createElement('div');
                 notification.textContent = message;
                 notification.className = `notification ${type}`;
-                
-                document.body.appendChild(notification);
-                
-                // Animate in
-                setTimeout(() => {
-                    notification.classList.add('show');
-                }, 100);
+                notification.classList.add('show');
                 
                 // Remove after 3 seconds
                 setTimeout(() => {
                     notification.classList.remove('show');
-                    setTimeout(() => {
-                        document.body.removeChild(notification);
-                    }, 300);
                 }, 3000);
             }
         });
