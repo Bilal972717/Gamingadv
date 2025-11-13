@@ -244,7 +244,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 4rem;
-            align-items: center;
+            align-items: start;
         }
         
         .consultation-visual {
@@ -314,34 +314,41 @@
             line-height: 1.8;
         }
         
-        /* Dynamic Pricing Section */
-        .pricing-section {
-            padding: 4rem 2rem;
-            background: var(--darker);
-            text-align: center;
-        }
-        
-        .pricing-container {
-            max-width: 600px;
-            margin: 0 auto;
+        /* Dynamic Pricing Card */
+        .pricing-card {
             background: rgba(30, 41, 59, 0.7);
             border-radius: 20px;
-            padding: 3rem;
+            padding: 2.5rem;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             opacity: 0;
             transform: translateY(30px);
+            position: sticky;
+            top: 120px;
+        }
+        
+        .pricing-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .pricing-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
         .pricing-title {
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
         }
         
-        .pricing-description {
+        .pricing-subtitle {
             color: var(--gray-dark);
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
         
         .price-input-container {
@@ -358,8 +365,6 @@
         
         .price-input-wrapper {
             position: relative;
-            max-width: 300px;
-            margin: 0 auto;
         }
         
         .price-input {
@@ -400,13 +405,11 @@
             cursor: pointer;
             transition: all 0.3s;
             width: 100%;
-            max-width: 300px;
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 0.5rem;
             box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
-            margin: 0 auto;
         }
         
         .add-to-cart-btn:hover {
@@ -416,6 +419,38 @@
         
         .add-to-cart-btn:active {
             transform: translateY(0);
+        }
+        
+        .feature-highlight {
+            margin-top: 2rem;
+        }
+        
+        .feature-highlight h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+        }
+        
+        .feature-highlight ul {
+            list-style: none;
+        }
+        
+        .feature-highlight li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+        }
+        
+        .feature-highlight li:last-child {
+            border-bottom: none;
+        }
+        
+        .feature-highlight li span {
+            background: var(--primary);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 1rem;
         }
         
         /* Sticky Cart Drawer */
@@ -578,7 +613,7 @@
         /* Testimonials */
         .testimonials {
             padding: 8rem 2rem;
-            background: var(--dark);
+            background: var(--darker);
         }
         
         .testimonials-container {
@@ -644,7 +679,7 @@
         /* Process Section */
         .process {
             padding: 8rem 2rem;
-            background: var(--darker);
+            background: var(--dark);
         }
         
         .process-steps {
@@ -805,6 +840,10 @@
             .footer-content {
                 grid-template-columns: 1fr 1fr;
             }
+            
+            .pricing-card {
+                position: static;
+            }
         }
         
         @media (max-width: 768px) {
@@ -825,7 +864,7 @@
                 border-radius: 20px 20px 0 0;
             }
             
-            .pricing-container {
+            .pricing-card {
                 padding: 2rem;
             }
         }
@@ -840,7 +879,6 @@
             </div>
             <div class="nav-links">
                 <a href="#consultation">Consultation</a>
-                <a href="#pricing">Pricing</a>
                 <a href="#process">Process</a>
                 <a href="#testimonials">Testimonials</a>
             </div>
@@ -857,7 +895,7 @@
         <div class="hero-content">
             <h1>Strategic Business Consultation</h1>
             <p>Transform your business operations with our expert consultation services. You decide the value of our expertise with our unique dynamic pricing model.</p>
-            <a href="#pricing" class="cta-button">Get Consultation</a>
+            <a href="#consultation" class="cta-button">Get Consultation</a>
         </div>
     </section>
 
@@ -866,67 +904,88 @@
         <p class="section-subtitle">Professional guidance to optimize your business processes and maximize efficiency</p>
         
         <div class="consultation-container">
-            <div class="consultation-visual">
-                <div class="consultation-card floating">
-                    <div class="consultation-image">
-                        <img src="https://cdn-icons-png.flaticon.com/512/4054/4054617.png" alt="Business Consultation">
-                    </div>
-                    <h3 class="consultation-title">Business Process Consultation</h3>
-                    <p class="consultation-description">Our expert consultants analyze your current processes and provide actionable recommendations to streamline operations, reduce costs, and improve efficiency.</p>
-                </div>
-            </div>
-            
             <div class="consultation-info">
+                <div class="consultation-visual">
+                    <div class="consultation-card floating">
+                        <div class="consultation-image">
+                            <img src="https://cdn-icons-png.flaticon.com/512/4054/4054617.png" alt="Business Consultation">
+                        </div>
+                        <h3 class="consultation-title">Business Process Consultation</h3>
+                        <p class="consultation-description">Our expert consultants analyze your current processes and provide actionable recommendations to streamline operations, reduce costs, and improve efficiency.</p>
+                    </div>
+                </div>
+                
                 <div class="feature-highlight">
                     <h3>Consultation Includes:</h3>
                     
-                    <ul style="margin-top: 1.5rem; list-style: none;">
-                        <li style="padding: 0.8rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center;">
-                            <span style="background: var(--primary); width: 8px; height: 8px; border-radius: 50%; margin-right: 1rem;"></span>
+                    <ul>
+                        <li>
+                            <span></span>
                             Comprehensive process analysis
                         </li>
-                        <li style="padding: 0.8rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center;">
-                            <span style="background: var(--primary); width: 8px; height: 8px; border-radius: 50%; margin-right: 1rem;"></span>
+                        <li>
+                            <span></span>
                             Efficiency and cost-saving recommendations
                         </li>
-                        <li style="padding: 0.8rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center;">
-                            <span style="background: var(--primary); width: 8px; height: 8px; border-radius: 50%; margin-right: 1rem;"></span>
+                        <li>
+                            <span></span>
                             Technology integration assessment
                         </li>
-                        <li style="padding: 0.8rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center;">
-                            <span style="background: var(--primary); width: 8px; height: 8px; border-radius: 50%; margin-right: 1rem;"></span>
+                        <li>
+                            <span></span>
                             Customized implementation roadmap
                         </li>
-                        <li style="padding: 0.8rem 0; display: flex; align-items: center;">
-                            <span style="background: var(--primary); width: 8px; height: 8px; border-radius: 50%; margin-right: 1rem;"></span>
+                        <li>
+                            <span></span>
                             Ongoing support and follow-up
                         </li>
                     </ul>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <section class="pricing-section" id="pricing">
-        <h2 class="section-title">Dynamic Pricing</h2>
-        <p class="section-subtitle">You decide the value of our consultation expertise</p>
-        
-        <div class="pricing-container">
-            <h3 class="pricing-title">Business Process Consultation</h3>
-            <p class="pricing-description">Set your investment for our comprehensive consultation service</p>
             
-            <div class="price-input-container">
-                <label for="priceInput" class="price-label">Enter Your Investment</label>
-                <div class="price-input-wrapper">
-                    <span class="currency-symbol">$</span>
-                    <input type="number" id="priceInput" class="price-input" min="1" placeholder="500.00">
+            <div class="pricing-card">
+                <div class="pricing-header">
+                    <div class="pricing-icon">📈</div>
+                    <h3 class="pricing-title">Dynamic Pricing</h3>
+                    <p class="pricing-subtitle">You decide the value of our consultation expertise</p>
+                </div>
+                
+                <div class="price-input-container">
+                    <label for="priceInput" class="price-label">Enter Your Investment</label>
+                    <div class="price-input-wrapper">
+                        <span class="currency-symbol">$</span>
+                        <input type="number" id="priceInput" class="price-input" min="1" placeholder="500.00">
+                    </div>
+                </div>
+                
+                <button class="add-to-cart-btn" id="addToCartBtn">
+                    <span>Add to Cart</span>
+                    <span>🛒</span>
+                </button>
+                
+                <div class="feature-highlight" style="margin-top: 2rem;">
+                    <h3>What You'll Receive:</h3>
+                    
+                    <ul>
+                        <li>
+                            <span></span>
+                            2-hour consultation session
+                        </li>
+                        <li>
+                            <span></span>
+                            Detailed analysis report
+                        </li>
+                        <li>
+                            <span></span>
+                            Customized action plan
+                        </li>
+                        <li>
+                            <span></span>
+                            30-day follow-up support
+                        </li>
+                    </ul>
                 </div>
             </div>
-            
-            <button class="add-to-cart-btn" id="addToCartBtn">
-                <span>Add to Cart</span>
-                <span>🛒</span>
-            </button>
         </div>
     </section>
 
@@ -1143,8 +1202,8 @@
                 }
             });
             
-            // Pricing container animation
-            gsap.fromTo('.pricing-container', {
+            // Pricing card animation
+            gsap.fromTo('.pricing-card', {
                 opacity: 0,
                 y: 30
             }, {
@@ -1152,7 +1211,7 @@
                 y: 0,
                 duration: 1,
                 scrollTrigger: {
-                    trigger: '.pricing-container',
+                    trigger: '.pricing-card',
                     start: 'top 80%',
                     end: 'bottom 20%',
                     toggleActions: 'play none none reverse'
