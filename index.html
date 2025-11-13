@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CoreTech BPO | Business Process Optimization</title>
+    <title>CoreTech BPO | Business Consultation</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
@@ -216,10 +216,11 @@
             box-shadow: 0 15px 30px rgba(37, 99, 235, 0.4);
         }
         
-        /* Services Section */
-        .services {
+        /* Consultation Section */
+        .consultation-section {
             padding: 8rem 2rem;
             background: var(--dark);
+            position: relative;
         }
         
         .section-title {
@@ -235,121 +236,6 @@
             max-width: 600px;
             margin: 0 auto 4rem;
             opacity: 0;
-        }
-        
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .service-card {
-            background: rgba(30, 41, 59, 0.7);
-            border-radius: 16px;
-            padding: 2.5rem 2rem;
-            text-align: center;
-            transition: all 0.3s;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            opacity: 0;
-            transform: translateY(30px);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .service-card:hover {
-            transform: translateY(-10px);
-            background: rgba(30, 41, 59, 0.9);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-        }
-        
-        .service-card.featured {
-            border: 1px solid var(--primary);
-            position: relative;
-        }
-        
-        .service-card.featured:before {
-            content: 'Most Popular';
-            position: absolute;
-            top: 0;
-            right: 0;
-            background: var(--gradient);
-            color: white;
-            padding: 0.5rem 1rem;
-            font-size: 0.8rem;
-            font-weight: 600;
-            border-bottom-left-radius: 16px;
-        }
-        
-        .service-icon {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .service-title {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .service-desc {
-            color: var(--gray-dark);
-            margin-bottom: 1.5rem;
-        }
-        
-        .service-features {
-            text-align: left;
-            margin-bottom: 2rem;
-        }
-        
-        .service-feature {
-            display: flex;
-            align-items: center;
-            margin-bottom: 0.8rem;
-            color: var(--gray-dark);
-        }
-        
-        .service-feature:before {
-            content: '✓';
-            color: var(--success);
-            margin-right: 0.5rem;
-            font-weight: bold;
-        }
-        
-        .service-price {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            color: var(--primary-light);
-        }
-        
-        .service-cta {
-            background: var(--gradient);
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            width: 100%;
-            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
-        }
-        
-        .service-cta:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 25px rgba(37, 99, 235, 0.4);
-        }
-        
-        /* Consultation Section */
-        .consultation-section {
-            padding: 8rem 2rem;
-            background: var(--darker);
-            position: relative;
         }
         
         .consultation-container {
@@ -428,56 +314,38 @@
             line-height: 1.8;
         }
         
-        /* Sticky Consultation Card */
-        .sticky-card {
-            position: fixed;
-            bottom: 2rem;
-            left: 2rem;
-            width: 350px;
-            background: rgba(30, 41, 59, 0.95);
+        /* Dynamic Pricing Section */
+        .pricing-section {
+            padding: 4rem 2rem;
+            background: var(--darker);
+            text-align: center;
+        }
+        
+        .pricing-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(30, 41, 59, 0.7);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
             backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 1.5rem;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            z-index: 900;
-            transition: all 0.4s ease;
-            transform: translateY(0);
-            opacity: 1;
-        }
-        
-        .sticky-card.hidden {
-            transform: translateY(150%);
             opacity: 0;
+            transform: translateY(30px);
         }
         
-        .sticky-card-header {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            margin-bottom: 1rem;
+        .pricing-title {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
         }
         
-        .sticky-card-icon {
-            font-size: 1.5rem;
-        }
-        
-        .sticky-card-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-        }
-        
-        .sticky-card-type {
-            font-size: 0.8rem;
+        .pricing-description {
             color: var(--gray-dark);
-            margin-left: auto;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
+            margin-bottom: 2rem;
         }
         
         .price-input-container {
-            margin-bottom: 1rem;
+            margin-bottom: 2rem;
         }
         
         .price-label {
@@ -485,20 +353,22 @@
             margin-bottom: 0.5rem;
             font-weight: 600;
             color: var(--light);
-            font-size: 0.9rem;
+            font-size: 1.1rem;
         }
         
         .price-input-wrapper {
             position: relative;
+            max-width: 300px;
+            margin: 0 auto;
         }
         
         .price-input {
             width: 100%;
-            padding: 0.8rem 0.8rem 0.8rem 2.5rem;
+            padding: 1rem 1rem 1rem 3rem;
             background: rgba(15, 23, 42, 0.7);
             border: 2px solid rgba(255, 255, 255, 0.1);
             border-radius: 10px;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: var(--light);
             transition: all 0.3s;
         }
@@ -516,24 +386,27 @@
             transform: translateY(-50%);
             color: var(--gray-dark);
             font-weight: 600;
+            font-size: 1.2rem;
         }
         
         .add-to-cart-btn {
             background: var(--gradient);
             color: white;
             border: none;
-            padding: 0.9rem 1.5rem;
+            padding: 1rem 2rem;
             border-radius: 10px;
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
             width: 100%;
+            max-width: 300px;
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 0.5rem;
             box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+            margin: 0 auto;
         }
         
         .add-to-cart-btn:hover {
@@ -929,23 +802,8 @@
                 grid-template-columns: 1fr;
             }
             
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
-            
             .footer-content {
                 grid-template-columns: 1fr 1fr;
-            }
-            
-            .sticky-card {
-                left: 50%;
-                transform: translateX(-50%);
-                width: 90%;
-                max-width: 400px;
-            }
-            
-            .sticky-card.hidden {
-                transform: translateX(-50%) translateY(150%);
             }
         }
         
@@ -966,6 +824,10 @@
                 max-width: 100%;
                 border-radius: 20px 20px 0 0;
             }
+            
+            .pricing-container {
+                padding: 2rem;
+            }
         }
     </style>
 </head>
@@ -977,8 +839,8 @@
                 <span>CoreTech BPO</span>
             </div>
             <div class="nav-links">
-                <a href="#services">Services</a>
                 <a href="#consultation">Consultation</a>
+                <a href="#pricing">Pricing</a>
                 <a href="#process">Process</a>
                 <a href="#testimonials">Testimonials</a>
             </div>
@@ -993,65 +855,15 @@
     <section class="hero">
         <div class="hero-bg"></div>
         <div class="hero-content">
-            <h1>Business Process Optimization Experts</h1>
-            <p>Transform your business operations with our comprehensive BPO solutions and strategic consultation services. You decide the value of our expertise.</p>
-            <a href="#consultation" class="cta-button">Get Consultation</a>
-        </div>
-    </section>
-
-    <section class="services" id="services">
-        <h2 class="section-title">Our BPO Services</h2>
-        <p class="section-subtitle">Comprehensive business process outsourcing solutions tailored to your needs</p>
-        
-        <div class="services-grid">
-            <div class="service-card">
-                <div class="service-icon">📞</div>
-                <h3 class="service-title">Customer Support</h3>
-                <p class="service-desc">24/7 multilingual customer service and technical support solutions</p>
-                <div class="service-features">
-                    <div class="service-feature">24/7 multilingual support</div>
-                    <div class="service-feature">Omnichannel communication</div>
-                    <div class="service-feature">CRM integration</div>
-                    <div class="service-feature">Performance analytics</div>
-                </div>
-                <div class="service-price">Starting at $1,500/mo</div>
-                <button class="service-cta" data-service="Customer Support" data-icon="📞">Select Service</button>
-            </div>
-            
-            <div class="service-card featured">
-                <div class="service-icon">📊</div>
-                <h3 class="service-title">Data Processing</h3>
-                <p class="service-desc">Accurate and efficient data entry, processing, and management services</p>
-                <div class="service-features">
-                    <div class="service-feature">Data entry & validation</div>
-                    <div class="service-feature">Database management</div>
-                    <div class="service-feature">Quality assurance</div>
-                    <div class="service-feature">Real-time reporting</div>
-                    <div class="service-feature">GDPR compliance</div>
-                </div>
-                <div class="service-price">Starting at $2,000/mo</div>
-                <button class="service-cta" data-service="Data Processing" data-icon="📊">Select Service</button>
-            </div>
-            
-            <div class="service-card">
-                <div class="service-icon">💼</div>
-                <h3 class="service-title">Back Office Support</h3>
-                <p class="service-desc">Comprehensive administrative and operational support services</p>
-                <div class="service-features">
-                    <div class="service-feature">Document processing</div>
-                    <div class="service-feature">HR administration</div>
-                    <div class="service-feature">Accounting support</div>
-                    <div class="service-feature">Workflow optimization</div>
-                </div>
-                <div class="service-price">Starting at $1,800/mo</div>
-                <button class="service-cta" data-service="Back Office Support" data-icon="💼">Select Service</button>
-            </div>
+            <h1>Strategic Business Consultation</h1>
+            <p>Transform your business operations with our expert consultation services. You decide the value of our expertise with our unique dynamic pricing model.</p>
+            <a href="#pricing" class="cta-button">Get Consultation</a>
         </div>
     </section>
 
     <section class="consultation-section" id="consultation">
-        <h2 class="section-title">Strategic Business Consultation</h2>
-        <p class="section-subtitle">Expert guidance to optimize your business processes and maximize efficiency</p>
+        <h2 class="section-title">Expert Business Consultation</h2>
+        <p class="section-subtitle">Professional guidance to optimize your business processes and maximize efficiency</p>
         
         <div class="consultation-container">
             <div class="consultation-visual">
@@ -1090,10 +902,31 @@
                             Ongoing support and follow-up
                         </li>
                     </ul>
-                    
-                    <button class="service-cta" style="margin-top: 2rem;" data-service="Business Process Consultation" data-icon="📈">Select Consultation</button>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <section class="pricing-section" id="pricing">
+        <h2 class="section-title">Dynamic Pricing</h2>
+        <p class="section-subtitle">You decide the value of our consultation expertise</p>
+        
+        <div class="pricing-container">
+            <h3 class="pricing-title">Business Process Consultation</h3>
+            <p class="pricing-description">Set your investment for our comprehensive consultation service</p>
+            
+            <div class="price-input-container">
+                <label for="priceInput" class="price-label">Enter Your Investment</label>
+                <div class="price-input-wrapper">
+                    <span class="currency-symbol">$</span>
+                    <input type="number" id="priceInput" class="price-input" min="1" placeholder="500.00">
+                </div>
+            </div>
+            
+            <button class="add-to-cart-btn" id="addToCartBtn">
+                <span>Add to Cart</span>
+                <span>🛒</span>
+            </button>
         </div>
     </section>
 
@@ -1142,42 +975,22 @@
             </div>
             
             <div class="testimonial-card">
-                <p class="testimonial-text">The customer support outsourcing service has reduced our response times by 60% while cutting costs by 30%. The flexible pricing allowed us to scale as our business grew.</p>
+                <p class="testimonial-text">The flexible pricing allowed us to get the consultation we needed within our budget. The insights we gained helped us streamline operations and increase productivity by 40%.</p>
                 <div class="testimonial-author">
                     <div class="author-avatar">SC</div>
                     <div class="author-info">
                         <h4>Sarah Chen</h4>
-                        <p>Customer Experience Director</p>
+                        <p>Operations Director</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Sticky Consultation Card -->
-    <div class="sticky-card hidden" id="stickyCard">
-        <div class="sticky-card-header">
-            <div class="sticky-card-icon" id="stickyCardIcon">📈</div>
-            <div class="sticky-card-title" id="stickyCardTitle">Service Name</div>
-            <div class="sticky-card-type" id="stickyCardType">Service</div>
-        </div>
-        <div class="price-input-container">
-            <label for="stickyPriceInput" class="price-label">Enter Your Investment</label>
-            <div class="price-input-wrapper">
-                <span class="currency-symbol">$</span>
-                <input type="number" id="stickyPriceInput" class="price-input" min="1" placeholder="0.00">
-            </div>
-        </div>
-        <button class="add-to-cart-btn" id="stickyAddToCartBtn">
-            <span>Add to Cart</span>
-            <span>🛒</span>
-        </button>
-    </div>
-
     <!-- Sticky Cart Drawer -->
     <div class="sticky-cart-drawer" id="stickyCartDrawer">
         <div class="cart-drawer-header" id="cartDrawerHeader">
-            <h3 class="cart-drawer-title">🛒 Your Selections <span id="drawerCartCount">(0)</span></h3>
+            <h3 class="cart-drawer-title">🛒 Your Consultation <span id="drawerCartCount">(0)</span></h3>
             <button class="cart-drawer-toggle" id="cartDrawerToggle">▼</button>
         </div>
         <div class="cart-drawer-content" id="cartDrawerContent">
@@ -1202,7 +1015,7 @@
         <div class="footer-content">
             <div class="footer-about">
                 <div class="footer-logo">CoreTech BPO</div>
-                <p class="footer-about">Leading business process outsourcing and consultation services with flexible pricing that puts you in control of value.</p>
+                <p class="footer-about">Expert business consultation services with flexible pricing that puts you in control of value.</p>
                 <div class="social-links">
                     <a href="#" class="social-link">📘</a>
                     <a href="#" class="social-link">🐦</a>
@@ -1213,10 +1026,10 @@
             <div class="footer-section">
                 <h3>Services</h3>
                 <div class="footer-links">
-                    <a href="#">Customer Support</a>
-                    <a href="#">Data Processing</a>
-                    <a href="#">Back Office</a>
-                    <a href="#">Consultation</a>
+                    <a href="#">Business Consultation</a>
+                    <a href="#">Process Optimization</a>
+                    <a href="#">Strategic Planning</a>
+                    <a href="#">Performance Analysis</a>
                 </div>
             </div>
             <div class="footer-section">
@@ -1298,25 +1111,6 @@
                 });
             });
             
-            // Service cards animation
-            gsap.utils.toArray('.service-card').forEach((card, i) => {
-                gsap.fromTo(card, {
-                    opacity: 0,
-                    y: 30
-                }, {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.8,
-                    delay: i * 0.2,
-                    scrollTrigger: {
-                        trigger: card,
-                        start: 'top 80%',
-                        end: 'bottom 20%',
-                        toggleActions: 'play none none reverse'
-                    }
-                });
-            });
-            
             // Consultation card animation
             gsap.fromTo('.consultation-card', {
                 opacity: 0,
@@ -1343,6 +1137,22 @@
                 duration: 1,
                 scrollTrigger: {
                     trigger: '.consultation-visual',
+                    start: 'top 80%',
+                    end: 'bottom 20%',
+                    toggleActions: 'play none none reverse'
+                }
+            });
+            
+            // Pricing container animation
+            gsap.fromTo('.pricing-container', {
+                opacity: 0,
+                y: 30
+            }, {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                scrollTrigger: {
+                    trigger: '.pricing-container',
                     start: 'top 80%',
                     end: 'bottom 20%',
                     toggleActions: 'play none none reverse'
@@ -1387,27 +1197,11 @@
                 });
             });
             
-            // Show sticky card after scrolling past hero
-            ScrollTrigger.create({
-                trigger: ".services",
-                start: "top 80%",
-                onEnter: () => {
-                    document.getElementById('stickyCard').classList.remove('hidden');
-                },
-                onLeaveBack: () => {
-                    document.getElementById('stickyCard').classList.add('hidden');
-                }
-            });
-            
             // Cart functionality
             const cartIcon = document.getElementById('cartIcon');
             const cartCount = document.getElementById('cartCount');
-            const stickyCard = document.getElementById('stickyCard');
-            const stickyCardIcon = document.getElementById('stickyCardIcon');
-            const stickyCardTitle = document.getElementById('stickyCardTitle');
-            const stickyCardType = document.getElementById('stickyCardType');
-            const stickyPriceInput = document.getElementById('stickyPriceInput');
-            const stickyAddToCartBtn = document.getElementById('stickyAddToCartBtn');
+            const priceInput = document.getElementById('priceInput');
+            const addToCartBtn = document.getElementById('addToCartBtn');
             const stickyCartDrawer = document.getElementById('stickyCartDrawer');
             const cartDrawerHeader = document.getElementById('cartDrawerHeader');
             const cartDrawerToggle = document.getElementById('cartDrawerToggle');
@@ -1420,39 +1214,13 @@
             
             let cart = [];
             let cartDrawerOpen = false;
-            let currentSelection = null;
             
             // Event Listeners
             cartIcon.addEventListener('click', toggleCartDrawer);
-            stickyAddToCartBtn.addEventListener('click', addToCart);
+            addToCartBtn.addEventListener('click', addToCart);
             cartDrawerHeader.addEventListener('click', toggleCartDrawer);
             drawerTermsCheckbox.addEventListener('change', toggleCheckoutButton);
             drawerCheckoutBtn.addEventListener('click', proceedToCheckout);
-            
-            // Service selection buttons
-            document.querySelectorAll('.service-cta').forEach(button => {
-                button.addEventListener('click', function() {
-                    const serviceName = this.getAttribute('data-service');
-                    const serviceIcon = this.getAttribute('data-icon');
-                    const isConsultation = serviceName.includes('Consultation');
-                    
-                    currentSelection = {
-                        name: serviceName,
-                        icon: serviceIcon,
-                        type: isConsultation ? 'Consultation' : 'Service'
-                    };
-                    
-                    // Update sticky card
-                    stickyCardIcon.textContent = serviceIcon;
-                    stickyCardTitle.textContent = serviceName;
-                    stickyCardType.textContent = isConsultation ? 'Consultation' : 'Service';
-                    stickyPriceInput.value = '';
-                    stickyPriceInput.placeholder = isConsultation ? '500.00' : '1500.00';
-                    
-                    // Scroll to sticky card
-                    stickyCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                });
-            });
             
             // Cart animation
             const cartTl = gsap.timeline({paused: true});
@@ -1487,12 +1255,7 @@
             }
             
             function addToCart() {
-                if (!currentSelection) {
-                    showNotification('Please select a service or consultation first', 'error');
-                    return;
-                }
-                
-                const price = parseFloat(stickyPriceInput.value);
+                const price = parseFloat(priceInput.value);
                 
                 if (isNaN(price) || price <= 0) {
                     showNotification('Please enter a valid investment amount', 'error');
@@ -1500,22 +1263,18 @@
                 }
                 
                 // Add item to cart
-                cart.push({
+                cart = [{
                     id: Date.now(),
-                    name: currentSelection.name,
+                    name: 'Business Process Consultation',
                     price: price,
-                    type: currentSelection.type,
-                    icon: currentSelection.icon
-                });
+                    type: 'Consultation',
+                    icon: '📈'
+                }];
                 
                 // Update cart count with animation
                 cartCount.textContent = cart.length;
                 drawerCartCount.textContent = `(${cart.length})`;
                 cartTl.restart();
-                
-                // Reset input
-                stickyPriceInput.value = '';
-                currentSelection = null;
                 
                 // Show cart drawer automatically
                 if (!cartDrawerOpen) {
@@ -1526,7 +1285,7 @@
                 updateCartDisplay();
                 
                 // Show confirmation
-                showNotification('Service added to cart!', 'success');
+                showNotification('Consultation added to cart!', 'success');
             }
             
             function updateCartDisplay() {
@@ -1579,7 +1338,7 @@
                 
                 // Simulate API call to backend
                 setTimeout(() => {
-                    showNotification('Order placed successfully! A confirmation email has been sent.', 'success');
+                    showNotification('Consultation booked successfully! A confirmation email has been sent.', 'success');
                     // Reset cart
                     cart = [];
                     cartCount.textContent = '0';
@@ -1589,6 +1348,7 @@
                     drawerCheckoutBtn.innerHTML = 'Proceed to Checkout';
                     toggleCartDrawer();
                     updateCartDisplay();
+                    priceInput.value = '';
                 }, 2000);
             }
             
