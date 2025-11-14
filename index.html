@@ -3,1212 +3,339 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CoreTech BPO | Business Consultation</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <title>Consultation Service with Sticky Checkout</title>
     <script src="https://js.stripe.com/v3/"></script>
     <style>
-        :root {
-            --primary: #2563EB;
-            --primary-dark: #1D4ED8;
-            --primary-light: #3B82F6;
-            --secondary: #059669;
-            --dark: #1E293B;
-            --darker: #0F172A;
-            --light: #F8FAFC;
-            --gray: #E2E8F0;
-            --gray-dark: #94A3B8;
-            --success: #10B981;
-            --gradient: linear-gradient(135deg, var(--primary), var(--primary-light));
-        }
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
-        html {
-            scroll-behavior: smooth;
-        }
-        
+
         body {
-            background-color: var(--darker);
-            color: var(--light);
             line-height: 1.6;
-            overflow-x: hidden;
+            color: #333;
+            background-color: #f8f9fa;
         }
-        
-        /* Header & Navigation */
+
         header {
-            background: rgba(15, 23, 42, 0.9);
-            backdrop-filter: blur(10px);
-            padding: 1rem 2rem;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            transition: all 0.3s ease;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
-        header.scrolled {
-            padding: 0.7rem 2rem;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-        }
-        
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .logo-icon {
-            margin-right: 10px;
-            font-size: 2rem;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-        }
-        
-        .nav-links a {
-            color: var(--light);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-            position: relative;
-        }
-        
-        .nav-links a:after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -5px;
-            left: 0;
-            background: var(--gradient);
-            transition: width 0.3s;
-        }
-        
-        .nav-links a:hover:after {
-            width: 100%;
-        }
-        
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            padding: 0 2rem;
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.9)), 
-                        url('https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
-            background-size: cover;
-            background-position: center;
-        }
-        
-        .hero-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 30% 50%, rgba(37, 99, 235, 0.15), transparent 50%),
-                        radial-gradient(circle at 70% 20%, rgba(5, 150, 105, 0.1), transparent 50%);
-            z-index: -1;
-        }
-        
-        .hero-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            text-align: center;
-            width: 100%;
-        }
-        
-        .hero h1 {
-            font-size: 4rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(to right, #fff, var(--primary-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        
-        .hero p {
-            font-size: 1.3rem;
-            max-width: 700px;
-            margin: 0 auto 3rem;
-            color: var(--gray-dark);
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        
-        .cta-button {
-            display: inline-block;
-            background: var(--gradient);
+            background: linear-gradient(135deg, #4f6df5, #3a56e4);
             color: white;
-            padding: 1rem 2.5rem;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s;
-            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        
-        .cta-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(37, 99, 235, 0.4);
-        }
-        
-        /* Consultation Section */
-        .consultation-section {
-            padding: 8rem 2rem;
-            background: var(--dark);
-            position: relative;
-        }
-        
-        .section-title {
+            padding: 1.5rem 0;
             text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .hero {
+            padding: 4rem 0;
+            text-align: center;
+            background-color: white;
+            margin-bottom: 2rem;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .hero h1 {
             font-size: 2.5rem;
             margin-bottom: 1rem;
-            opacity: 0;
+            color: #2c3e50;
         }
-        
-        .section-subtitle {
-            text-align: center;
-            color: var(--gray-dark);
-            max-width: 600px;
-            margin: 0 auto 4rem;
-            opacity: 0;
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            color: #7f8c8d;
         }
-        
-        .consultation-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: start;
-        }
-        
-        .consultation-info {
-            background: rgba(30, 41, 59, 0.7);
-            border-radius: 20px;
-            padding: 2.5rem;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        
-        .consultation-header {
+
+        .content-section {
             display: flex;
-            align-items: center;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            gap: 2rem;
+            margin-bottom: 3rem;
         }
-        
-        .consultation-icon {
-            font-size: 3rem;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+
+        .main-content {
+            flex: 1;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         }
-        
-        .consultation-title {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .consultation-subtitle {
-            color: var(--gray-dark);
-        }
-        
-        .consultation-image {
-            width: 100%;
-            height: 200px;
-            background: var(--gradient);
-            border-radius: 12px;
-            margin-bottom: 1.5rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .consultation-image:after {
-            content: '';
-            position: absolute;
-            width: 150%;
-            height: 150%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
-            transform: translateX(-100%) rotate(45deg);
-            transition: transform 0.6s;
-        }
-        
-        .consultation-info:hover .consultation-image:after {
-            transform: translateX(100%) rotate(45deg);
-        }
-        
-        .consultation-image img {
-            max-width: 80%;
-            max-height: 80%;
-            object-fit: contain;
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
-        }
-        
-        .consultation-description {
-            color: var(--gray-dark);
-            margin-bottom: 2rem;
-            line-height: 1.8;
-        }
-        
-        .consultation-features {
-            margin-bottom: 2rem;
-        }
-        
-        .consultation-features h3 {
-            margin-bottom: 1.5rem;
-            font-size: 1.4rem;
-        }
-        
-        .consultation-features ul {
-            list-style: none;
-        }
-        
-        .consultation-features li {
-            padding: 0.8rem 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            display: flex;
-            align-items: center;
-        }
-        
-        .consultation-features li:last-child {
-            border-bottom: none;
-        }
-        
-        .consultation-features li span {
-            background: var(--primary);
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            margin-right: 1rem;
-        }
-        
-        /* Sticky Buy Now Section */
-        .sticky-buy-now {
-            position: fixed;
-            bottom: 2rem;
-            left: 2rem;
+
+        .sidebar {
             width: 350px;
-            background: rgba(30, 41, 59, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 1.5rem;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            z-index: 900;
-            transition: all 0.4s ease;
-            transform: translateY(0);
-            opacity: 1;
-        }
-        
-        .sticky-buy-now.hidden {
-            transform: translateY(150%);
-            opacity: 0;
-        }
-        
-        .sticky-header {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            margin-bottom: 1rem;
-        }
-        
-        .sticky-icon {
-            font-size: 1.5rem;
-        }
-        
-        .sticky-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-        }
-        
-        .price-input-container {
-            margin-bottom: 1rem;
-        }
-        
-        .price-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: var(--light);
-            font-size: 0.9rem;
-        }
-        
-        .price-input-wrapper {
             position: relative;
         }
-        
+
+        .sticky-checkout {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e1e8ed;
+            position: sticky;
+            top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .sticky-checkout.stuck {
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+            border-color: #4f6df5;
+        }
+
+        .price-display {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
         .price-input {
             width: 100%;
-            padding: 0.8rem 0.8rem 0.8rem 2.5rem;
-            background: rgba(15, 23, 42, 0.7);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            font-size: 1.1rem;
-            color: var(--light);
-            transition: all 0.3s;
-        }
-        
-        .price-input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
-        }
-        
-        .currency-symbol {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--gray-dark);
-            font-weight: 600;
-        }
-        
-        .terms-checkbox {
-            display: flex;
-            align-items: flex-start;
+            padding: 12px;
             margin-bottom: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
         }
-        
-        .terms-checkbox input {
-            margin-right: 10px;
-            margin-top: 3px;
-        }
-        
-        .terms-text {
-            font-size: 0.85rem;
-            color: var(--gray-dark);
-        }
-        
-        .terms-text a {
-            color: var(--primary-light);
-            text-decoration: none;
-        }
-        
-        .terms-text a:hover {
-            text-decoration: underline;
-        }
-        
-        .buy-now-btn {
-            background: var(--gradient);
+
+        .checkout-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #4f6df5, #3a56e4);
             color: white;
             border: none;
-            padding: 0.9rem 1.5rem;
-            border-radius: 10px;
-            font-size: 1rem;
+            border-radius: 5px;
+            font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
-            width: 100%;
+            transition: all 0.3s ease;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 0.5rem;
-            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+            gap: 8px;
         }
-        
-        .buy-now-btn:hover:not(:disabled) {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 25px rgba(37, 99, 235, 0.4);
+
+        .checkout-btn:hover {
+            background: linear-gradient(135deg, #3a56e4, #2a46d4);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(63, 81, 181, 0.3);
         }
-        
-        .buy-now-btn:disabled {
-            background: var(--gray-dark);
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
+
+        .checkout-btn:active {
+            transform: translateY(0);
         }
-        
-        /* Process Section */
-        .process {
-            padding: 8rem 2rem;
-            background: var(--darker);
+
+        .consultation-section {
+            margin-bottom: 2rem;
         }
-        
-        .process-steps {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .process-step {
-            text-align: center;
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        
-        .step-number {
-            width: 60px;
-            height: 60px;
-            background: var(--gradient);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin: 0 auto 1.5rem;
-        }
-        
-        .step-title {
-            font-size: 1.3rem;
+
+        .consultation-section h2 {
+            color: #2c3e50;
             margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #f0f2f5;
         }
-        
-        .step-desc {
-            color: var(--gray-dark);
+
+        .consultation-option {
+            padding: 1rem;
+            border: 1px solid #e1e8ed;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
-        
-        /* Testimonials */
-        .testimonials {
-            padding: 8rem 2rem;
-            background: var(--dark);
+
+        .consultation-option:hover {
+            border-color: #4f6df5;
+            background-color: #f8f9ff;
         }
-        
-        .testimonials-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            position: relative;
+
+        .consultation-option.selected {
+            border-color: #4f6df5;
+            background-color: #f0f3ff;
         }
-        
-        .testimonial-card {
-            background: rgba(30, 41, 59, 0.7);
-            padding: 3rem;
-            border-radius: 20px;
-            margin-bottom: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            opacity: 0;
-            transform: translateY(30px);
+
+        .consultation-option h3 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
         }
-        
-        .testimonial-text {
-            font-size: 1.2rem;
-            font-style: italic;
-            margin-bottom: 2rem;
-            line-height: 1.8;
-            position: relative;
+
+        .consultation-option p {
+            color: #7f8c8d;
         }
-        
-        .testimonial-text:before {
-            content: '"';
-            font-size: 4rem;
-            position: absolute;
-            top: -1rem;
-            left: -1.5rem;
-            color: var(--primary);
-            opacity: 0.3;
-        }
-        
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        
-        .author-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: var(--gradient);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+
+        .consultation-option .price {
             font-weight: bold;
+            color: #4f6df5;
+            margin-top: 0.5rem;
         }
-        
-        .author-info h4 {
-            font-weight: 600;
-        }
-        
-        .author-info p {
-            color: var(--gray-dark);
-            font-size: 0.9rem;
-        }
-        
-        /* Footer */
+
         footer {
-            background: var(--darker);
-            padding: 5rem 2rem 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
-            gap: 3rem;
-        }
-        
-        .footer-logo {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .footer-about {
-            color: var(--gray-dark);
-            margin-bottom: 1.5rem;
-        }
-        
-        .social-links {
-            display: flex;
-            gap: 1rem;
-        }
-        
-        .social-link {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.05);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-        }
-        
-        .social-link:hover {
-            background: var(--primary);
-            transform: translateY(-3px);
-        }
-        
-        .footer-section h3 {
-            margin-bottom: 1.5rem;
-            font-size: 1.3rem;
-        }
-        
-        .footer-links a {
-            display: block;
-            color: var(--gray-dark);
-            margin-bottom: 0.8rem;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        
-        .footer-links a:hover {
-            color: var(--primary-light);
-        }
-        
-        .copyright {
-            margin-top: 4rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            text-align: center;
-            color: var(--gray-dark);
-        }
-        
-        /* Notification */
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 1rem 1.5rem;
-            border-radius: 8px;
+            background-color: #2c3e50;
             color: white;
-            font-weight: 500;
-            z-index: 10000;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            transform: translateX(100%);
-            transition: transform 0.3s;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
         }
-        
-        .notification.success {
-            background: var(--success);
-        }
-        
-        .notification.error {
-            background: var(--secondary);
-        }
-        
-        .notification.show {
-            transform: translateX(0);
-        }
-        
-        /* Loading Overlay */
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            display: none;
-        }
-        
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: var(--primary);
-            animation: spin 1s ease-in-out infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        /* Animations */
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-        
-        .floating {
-            animation: float 5s ease-in-out infinite;
-        }
-        
-        /* Responsive Design */
-        @media (max-width: 968px) {
-            .consultation-container {
-                grid-template-columns: 1fr;
-            }
-            
-            .footer-content {
-                grid-template-columns: 1fr 1fr;
-            }
-            
-            .sticky-buy-now {
-                left: 50%;
-                transform: translateX(-50%);
-                width: 90%;
-                max-width: 400px;
-            }
-            
-            .sticky-buy-now.hidden {
-                transform: translateX(-50%) translateY(150%);
-            }
-        }
-        
+
         @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.8rem;
+            .content-section {
+                flex-direction: column;
             }
             
-            .nav-links {
-                display: none;
+            .sidebar {
+                width: 100%;
             }
             
-            .footer-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .consultation-info {
-                padding: 2rem;
+            .sticky-checkout {
+                position: relative;
+                top: 0;
+                margin-top: 2rem;
             }
         }
     </style>
 </head>
 <body>
-    <header id="header">
-        <nav>
-            <div class="logo">
-                <span class="logo-icon">⚙️</span>
-                <span>CoreTech BPO</span>
-            </div>
-            <div class="nav-links">
-                <a href="#consultation">Consultation</a>
-                <a href="#process">Process</a>
-                <a href="#testimonials">Testimonials</a>
-            </div>
-        </nav>
+    <header>
+        <div class="container">
+            <h1>Professional Consultation Services</h1>
+            <p>Get expert advice tailored to your needs</p>
+        </div>
     </header>
 
-    <section class="hero">
-        <div class="hero-bg"></div>
-        <div class="hero-content">
-            <h1>Strategic Business Consultation</h1>
-            <p>Transform your business operations with our expert consultation services. You decide the value of our expertise with our unique dynamic pricing model.</p>
-            <a href="#consultation" class="cta-button">Get Consultation</a>
-        </div>
-    </section>
+    <div class="container">
+        <section class="hero">
+            <h1>Find the Perfect Consultation Plan</h1>
+            <p>Our experts are ready to help you achieve your goals. Select a consultation option below and book your session.</p>
+        </section>
 
-    <section class="consultation-section" id="consultation">
-        <h2 class="section-title">Expert Business Consultation</h2>
-        <p class="section-subtitle">Professional guidance to optimize your business processes and maximize efficiency</p>
-        
-        <div class="consultation-container">
-            <div class="consultation-info floating">
-                <div class="consultation-header">
-                    <div class="consultation-icon">📈</div>
-                    <div>
-                        <h3 class="consultation-title">Business Process Consultation</h3>
-                        <p class="consultation-subtitle">Comprehensive analysis and optimization strategy</p>
-                    </div>
-                </div>
-                
-                <div class="consultation-image">
-                    <img src="https://cdn-icons-png.flaticon.com/512/4054/4054617.png" alt="Business Consultation">
-                </div>
-                
-                <p class="consultation-description">Our expert consultants analyze your current processes and provide actionable recommendations to streamline operations, reduce costs, and improve efficiency. With our unique dynamic pricing model, you determine the value of our expertise based on your business needs and budget.</p>
-                
-                <div class="consultation-features">
-                    <h3>Consultation Includes:</h3>
+        <div class="content-section">
+            <div class="main-content">
+                <section class="consultation-section">
+                    <h2>Consultation Options</h2>
                     
-                    <ul>
-                        <li>
-                            <span></span>
-                            Comprehensive process analysis and assessment
-                        </li>
-                        <li>
-                            <span></span>
-                            Efficiency and cost-saving recommendations
-                        </li>
-                        <li>
-                            <span></span>
-                            Technology integration assessment
-                        </li>
-                        <li>
-                            <span></span>
-                            Customized implementation roadmap
-                        </li>
-                        <li>
-                            <span></span>
-                            Ongoing support and follow-up sessions
-                        </li>
-                    </ul>
-                </div>
+                    <div class="consultation-option" data-price="99">
+                        <h3>Basic Consultation</h3>
+                        <p>30-minute session with a general consultant to discuss your initial needs and provide basic guidance.</p>
+                        <div class="price">$99</div>
+                    </div>
+                    
+                    <div class="consultation-option selected" data-price="199">
+                        <h3>Standard Consultation</h3>
+                        <p>60-minute in-depth session with a specialized consultant, including follow-up resources.</p>
+                        <div class="price">$199</div>
+                    </div>
+                    
+                    <div class="consultation-option" data-price="349">
+                        <h3>Premium Consultation</h3>
+                        <p>90-minute comprehensive session with a senior consultant, detailed analysis, and personalized action plan.</p>
+                        <div class="price">$349</div>
+                    </div>
+                    
+                    <div class="consultation-option" data-price="599">
+                        <h3>Enterprise Consultation</h3>
+                        <p>2-hour strategic session for business needs, including team coordination and implementation roadmap.</p>
+                        <div class="price">$599</div>
+                    </div>
+                </section>
+                
+                <section class="consultation-details">
+                    <h2>What to Expect</h2>
+                    <p>Our consultation process is designed to provide you with the insights and guidance you need to move forward confidently.</p>
+                    
+                    <h3>Before Your Session</h3>
+                    <p>We'll ask you to complete a brief questionnaire to help us understand your specific situation and goals.</p>
+                    
+                    <h3>During Your Session</h3>
+                    <p>Your consultant will listen to your concerns, ask clarifying questions, and provide expert advice tailored to your unique circumstances.</p>
+                    
+                    <h3>After Your Session</h3>
+                    <p>You'll receive a summary of key takeaways and recommended next steps to help you implement what you've learned.</p>
+                    
+                    <h3>Our Consultants</h3>
+                    <p>All our consultants are highly qualified professionals with years of experience in their respective fields. They undergo rigorous training to ensure they provide the highest quality advice.</p>
+                    
+                    <h3>Confidentiality</h3>
+                    <p>We take your privacy seriously. All consultations are completely confidential, and your information is protected with industry-standard security measures.</p>
+                </section>
             </div>
             
-            <div class="consultation-info">
-                <div class="consultation-header">
-                    <div class="consultation-icon">🚀</div>
-                    <div>
-                        <h3 class="consultation-title">How It Works</h3>
-                        <p class="consultation-subtitle">Simple process, powerful results</p>
-                    </div>
-                </div>
-                
-                <div class="consultation-features">
-                    <ul>
-                        <li>
-                            <span></span>
-                            <strong>Initial Assessment:</strong> We analyze your current business processes
-                        </li>
-                        <li>
-                            <span></span>
-                            <strong>Strategy Development:</strong> Create a customized optimization plan
-                        </li>
-                        <li>
-                            <span></span>
-                            <strong>Implementation Support:</strong> Guide you through the execution phase
-                        </li>
-                        <li>
-                            <span></span>
-                            <strong>Performance Monitoring:</strong> Track results and make adjustments
-                        </li>
-                        <li>
-                            <span></span>
-                            <strong>Ongoing Optimization:</strong> Continuous improvement for lasting results
-                        </li>
-                    </ul>
-                </div>
-                
-                <div class="what-you-get" style="margin-top: 2rem;">
-                    <h3>What You'll Receive:</h3>
-                    
-                    <ul>
-                        <li>
-                            <span></span>
-                            2-hour comprehensive consultation session
-                        </li>
-                        <li>
-                            <span></span>
-                            Detailed analysis report with recommendations
-                        </li>
-                        <li>
-                            <span></span>
-                            Customized action plan for implementation
-                        </li>
-                        <li>
-                            <span></span>
-                            30-day follow-up support and guidance
-                        </li>
-                    </ul>
+            <div class="sidebar">
+                <div class="sticky-checkout" id="stickyCheckout">
+                    <div class="price-display">$<span id="displayPrice">199</span></div>
+                    <input type="number" class="price-input" id="priceInput" value="199" min="1" step="1">
+                    <button class="checkout-btn" id="checkoutButton">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 8H4V6H20V8ZM4 13H20V11H4V13ZM4 18H20V16H4V18Z" fill="white"/>
+                        </svg>
+                        Proceed to Checkout
+                    </button>
+                    <p style="text-align: center; margin-top: 10px; font-size: 0.9rem; color: #7f8c8d;">
+                        Secure payment powered by Stripe
+                    </p>
                 </div>
             </div>
         </div>
-    </section>
-
-    <!-- Sticky Buy Now Section -->
-    <div class="sticky-buy-now hidden" id="stickyBuyNow">
-        <div class="sticky-header">
-            <div class="sticky-icon">💰</div>
-            <div class="sticky-title">Dynamic Pricing</div>
-        </div>
-        
-        <div class="price-input-container">
-            <label for="stickyPriceInput" class="price-label">Enter Your Investment</label>
-            <div class="price-input-wrapper">
-                <span class="currency-symbol">$</span>
-                <input type="number" id="stickyPriceInput" class="price-input" min="1" placeholder="500.00">
-            </div>
-        </div>
-        
-        <div class="terms-checkbox">
-            <input type="checkbox" id="stickyTermsCheckbox">
-            <label for="stickyTermsCheckbox" class="terms-text">
-                I agree to the <a href="#" target="_blank">Terms and Conditions</a>
-            </label>
-        </div>
-        
-        <button class="buy-now-btn" id="stickyBuyNowBtn" disabled>
-            <span>Buy Now</span>
-            <span>🚀</span>
-        </button>
     </div>
 
-    <section class="process" id="process">
-        <h2 class="section-title">Our Engagement Process</h2>
-        <p class="section-subtitle">Simple steps to transform your business operations</p>
-        
-        <div class="process-steps">
-            <div class="process-step">
-                <div class="step-number">1</div>
-                <h3 class="step-title">Discovery & Assessment</h3>
-                <p class="step-desc">We analyze your current processes and identify improvement opportunities</p>
-            </div>
-            <div class="process-step">
-                <div class="step-number">2</div>
-                <h3 class="step-title">Strategy Development</h3>
-                <p class="step-desc">Create a customized optimization plan tailored to your business needs</p>
-            </div>
-            <div class="process-step">
-                <div class="step-number">3</div>
-                <h3 class="step-title">Implementation</h3>
-                <p class="step-desc">Execute the plan with our expert team and proven methodologies</p>
-            </div>
-            <div class="process-step">
-                <div class="step-number">4</div>
-                <h3 class="step-title">Optimization & Support</h3>
-                <p class="step-desc">Continuous monitoring and improvement with ongoing support</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="testimonials" id="testimonials">
-        <h2 class="section-title">Client Success Stories</h2>
-        <p class="section-subtitle">Hear from businesses that transformed their operations with CoreTech</p>
-        
-        <div class="testimonials-container">
-            <div class="testimonial-card">
-                <p class="testimonial-text">CoreTech's consultation helped us identify inefficiencies we didn't even know existed. Their dynamic pricing model made expert consultation accessible, and the ROI was evident within the first quarter.</p>
-                <div class="testimonial-author">
-                    <div class="author-avatar">RJ</div>
-                    <div class="author-info">
-                        <h4>Robert Johnson</h4>
-                        <p>COO, TechSolutions Inc.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="testimonial-card">
-                <p class="testimonial-text">The flexible pricing allowed us to get the consultation we needed within our budget. The insights we gained helped us streamline operations and increase productivity by 40%.</p>
-                <div class="testimonial-author">
-                    <div class="author-avatar">SC</div>
-                    <div class="author-info">
-                        <h4>Sarah Chen</h4>
-                        <p>Operations Director</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     <footer>
-        <div class="footer-content">
-            <div class="footer-about">
-                <div class="footer-logo">CoreTech BPO</div>
-                <p class="footer-about">Expert business consultation services with flexible pricing that puts you in control of value.</p>
-                <div class="social-links">
-                    <a href="#" class="social-link">📘</a>
-                    <a href="#" class="social-link">🐦</a>
-                    <a href="#" class="social-link">📷</a>
-                    <a href="#" class="social-link">💼</a>
-                </div>
-            </div>
-            <div class="footer-section">
-                <h3>Services</h3>
-                <div class="footer-links">
-                    <a href="#">Business Consultation</a>
-                    <a href="#">Process Optimization</a>
-                    <a href="#">Strategic Planning</a>
-                    <a href="#">Performance Analysis</a>
-                </div>
-            </div>
-            <div class="footer-section">
-                <h3>Company</h3>
-                <div class="footer-links">
-                    <a href="#">About Us</a>
-                    <a href="#">Our Team</a>
-                    <a href="#">Careers</a>
-                    <a href="#">Contact</a>
-                </div>
-            </div>
-            <div class="footer-section">
-                <h3>Legal</h3>
-                <div class="footer-links">
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Terms & Conditions</a>
-                    <a href="#">Service Agreement</a>
-                    <a href="#">GDPR Compliance</a>
-                </div>
-            </div>
-        </div>
-        <div class="copyright">
-            &copy; 2023 CoreTech Business Process Outsourcing. All rights reserved.
+        <div class="container">
+            <p>&copy; 2023 Consultation Services. All rights reserved.</p>
         </div>
     </footer>
 
-    <!-- Loading Overlay -->
-    <div class="loading-overlay" id="loadingOverlay">
-        <div class="loading-spinner"></div>
-    </div>
-
-    <!-- Notification -->
-    <div class="notification" id="notification"></div>
-
     <script>
-        // Initialize GSAP animations
-        gsap.registerPlugin(ScrollTrigger);
-        
         // Initialize Stripe
-        const stripe = Stripe('pk_test_51JABC1234567890'); // Replace with your actual Stripe publishable key
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            // Header scroll effect
-            const header = document.getElementById('header');
-            window.addEventListener('scroll', function() {
-                if (window.scrollY > 50) {
-                    header.classList.add('scrolled');
-                } else {
-                    header.classList.remove('scrolled');
-                }
-            });
-            
-            // Hero animations
-            gsap.to('.hero h1', {
-                opacity: 1,
-                y: 0,
-                duration: 1,
-                delay: 0.3
-            });
-            
-            gsap.to('.hero p', {
-                opacity: 1,
-                y: 0,
-                duration: 1,
-                delay: 0.5
-            });
-            
-            gsap.to('.cta-button', {
-                opacity: 1,
-                y: 0,
-                duration: 1,
-                delay: 0.7
-            });
-            
-            // Section animations
-            gsap.utils.toArray('.section-title, .section-subtitle').forEach(el => {
-                gsap.fromTo(el, {
-                    opacity: 0,
-                    y: 30
-                }, {
-                    opacity: 1,
-                    y: 0,
-                    duration: 1,
-                    scrollTrigger: {
-                        trigger: el,
-                        start: 'top 80%',
-                        end: 'bottom 20%',
-                        toggleActions: 'play none none reverse'
-                    }
-                });
-            });
-            
-            // Consultation info animation
-            gsap.fromTo('.consultation-info', {
-                opacity: 0,
-                y: 30
-            }, {
-                opacity: 1,
-                y: 0,
-                duration: 1,
-                scrollTrigger: {
-                    trigger: '.consultation-info',
-                    start: 'top 80%',
-                    end: 'bottom 20%',
-                    toggleActions: 'play none none reverse'
-                }
-            });
-            
-            // Process steps animation
-            gsap.utils.toArray('.process-step').forEach((step, i) => {
-                gsap.fromTo(step, {
-                    opacity: 0,
-                    y: 30
-                }, {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.8,
-                    delay: i * 0.2,
-                    scrollTrigger: {
-                        trigger: step,
-                        start: 'top 80%',
-                        end: 'bottom 20%',
-                        toggleActions: 'play none none reverse'
-                    }
-                });
-            });
-            
-            // Testimonial cards animation
-            gsap.utils.toArray('.testimonial-card').forEach((card, i) => {
-                gsap.fromTo(card, {
-                    opacity: 0,
-                    y: 30
-                }, {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.8,
-                    delay: i * 0.3,
-                    scrollTrigger: {
-                        trigger: card,
-                        start: 'top 80%',
-                        end: 'bottom 20%',
-                        toggleActions: 'play none none reverse'
-                    }
-                });
-            });
-            
-            // Show sticky buy now after scrolling past hero
-            ScrollTrigger.create({
-                trigger: ".consultation-section",
-                start: "top 80%",
-                onEnter: () => {
-                    document.getElementById('stickyBuyNow').classList.remove('hidden');
-                },
-                onLeaveBack: () => {
-                    document.getElementById('stickyBuyNow').classList.add('hidden');
-                }
-            });
-            
-            // Purchase functionality
-            const stickyPriceInput = document.getElementById('stickyPriceInput');
-            const stickyTermsCheckbox = document.getElementById('stickyTermsCheckbox');
-            const stickyBuyNowBtn = document.getElementById('stickyBuyNowBtn');
-            const loadingOverlay = document.getElementById('loadingOverlay');
-            const notification = document.getElementById('notification');
-            
-            // Event Listeners
-            stickyPriceInput.addEventListener('input', toggleBuyNowButton);
-            stickyTermsCheckbox.addEventListener('change', toggleBuyNowButton);
-            stickyBuyNowBtn.addEventListener('click', initiateStripeCheckout);
-            
-            // Functions
-            function toggleBuyNowButton() {
-                const price = parseFloat(stickyPriceInput.value);
-                const termsAgreed = stickyTermsCheckbox.checked;
+        const stripe = Stripe('pk_test_your_publishable_key'); // Replace with your actual publishable key
+
+        // DOM Elements
+        const consultationOptions = document.querySelectorAll('.consultation-option');
+        const priceInput = document.getElementById('priceInput');
+        const displayPrice = document.getElementById('displayPrice');
+        const checkoutButton = document.getElementById('checkoutButton');
+        const stickyCheckout = document.getElementById('stickyCheckout');
+
+        // Set initial selected option
+        consultationOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                // Remove selected class from all options
+                consultationOptions.forEach(opt => opt.classList.remove('selected'));
                 
-                stickyBuyNowBtn.disabled = isNaN(price) || price <= 0 || !termsAgreed;
-            }
+                // Add selected class to clicked option
+                this.classList.add('selected');
+                
+                // Update price
+                const price = this.getAttribute('data-price');
+                priceInput.value = price;
+                displayPrice.textContent = price;
+            });
+        });
+
+        // Update price display when input changes
+        priceInput.addEventListener('input', function() {
+            displayPrice.textContent = this.value;
+        });
+
+        // Handle checkout
+        checkoutButton.addEventListener('click', async function() {
+            const price = parseFloat(priceInput.value);
+            const productName = "Consultation Service";
             
-            async function initiateStripeCheckout() {
-                const price = parseFloat(stickyPriceInput.value);
-                
-                if (isNaN(price) || price <= 0) {
-                    showNotification('Please enter a valid investment amount', 'error');
-                    return;
-                }
-                
-                if (!stickyTermsCheckbox.checked) {
-                    showNotification('Please agree to the Terms and Conditions', 'error');
-                    return;
-                }
-                
-                // Show loading
-                loadingOverlay.style.display = 'flex';
-                
-                try {
-                    // In a real implementation, you would call your backend to create a Checkout Session
-                    // For demo purposes, we'll simulate this with a timeout
-                    
-                    // Simulate API call to create Checkout Session
-                    setTimeout(async () => {
-                        // This would be the response from your backend
-                        const sessionId = await createCheckoutSession(price);
-                        
-                        // Redirect to Stripe Checkout
-                        const result = await stripe.redirectToCheckout({
-                            sessionId: sessionId
-                        });
-                        
-                        if (result.error) {
-                            showNotification('Error redirecting to payment: ' + result.error.message, 'error');
-                            loadingOverlay.style.display = 'none';
-                        }
-                    }, 1500);
-                    
-                } catch (error) {
-                    console.error('Error:', error);
-                    showNotification('An error occurred while processing your request', 'error');
-                    loadingOverlay.style.display = 'none';
-                }
-            }
+            // Disable button and show loading state
+            checkoutButton.disabled = true;
+            checkoutButton.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C13.3132 2 14.6136 2.25866 15.8268 2.7612C17.0401 3.26375 18.1425 4.00035 19.0711 4.92893C19.9997 5.85752 20.7362 6.95991 21.2388 8.17317C21.7413 9.38642 22 10.6868 22 12C22 13.3132 21.7413 14.6136 21.2388 15.8268C20.7362 17.0401 19.9997 18.1425 19.0711 19.0711C18.1425 19.9997 17.0401 20.7362 15.8268 21.2388C14.6136 21.7413 13.3132 22 12 22C10.6868 22 9.38642 21.7413 8.17317 21.2388C6.95991 20.7362 5.85752 19.9997 4.92893 19.0711C4.00035 18.1425 3.26375 17.0401 2.7612 15.8268C2.25866 14.6136 2 13.3132 2 12C2 10.6868 2.25866 9.38642 2.7612 8.17317C3.26375 6.95991 4.00035 5.85752 4.92893 4.92893C5.85752 4.00035 6.95991 3.26375 8.17317 2.7612C9.38642 2.25866 10.6868 2 12 2V2Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg> Processing...';
             
-            // This function would call your backend to create a Checkout Session
-            async function createCheckoutSession(price) {
-                // In a real implementation, you would make a fetch request to your backend
-                // For demo purposes, we'll return a mock session ID
-                
-                // Example of what your backend would do:
-                /*
+            try {
+                // Create checkout session
                 const response = await fetch('/create-checkout-session', {
                     method: 'POST',
                     headers: {
@@ -1216,34 +343,42 @@
                     },
                     body: JSON.stringify({
                         price: price,
-                        productName: 'Business Process Consultation',
+                        productName: productName,
                         successUrl: `${window.location.origin}/success.html`,
                         cancelUrl: `${window.location.origin}/cancel.html`,
                     }),
                 });
                 
-                const { sessionId } = await response.json();
-                return sessionId;
-                */
+                const data = await response.json();
                 
-                // For demo, we'll simulate a successful response with a timeout
-                return new Promise((resolve) => {
-                    setTimeout(() => {
-                        // This would be a real session ID from Stripe in production
-                        resolve('cs_test_1234567890abcdefghijklmnopqrstuvwxyz');
-                    }, 1000);
-                });
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
+                // Redirect to Stripe Checkout
+                const result = await stripe.redirectToCheckout({ sessionId: data.sessionId });
+                
+                if (result.error) {
+                    throw new Error(result.error.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+                
+                // Reset button
+                checkoutButton.disabled = false;
+                checkoutButton.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 8H4V6H20V8ZM4 13H20V11H4V13ZM4 18H20V16H4V18Z" fill="white"/></svg> Proceed to Checkout';
             }
+        });
+
+        // Enhance sticky checkout visibility when scrolled
+        window.addEventListener('scroll', function() {
+            const scrollPosition = window.scrollY;
             
-            function showNotification(message, type) {
-                notification.textContent = message;
-                notification.className = `notification ${type}`;
-                notification.classList.add('show');
-                
-                // Remove after 3 seconds
-                setTimeout(() => {
-                    notification.classList.remove('show');
-                }, 3000);
+            if (scrollPosition > 200) {
+                stickyCheckout.classList.add('stuck');
+            } else {
+                stickyCheckout.classList.remove('stuck');
             }
         });
     </script>
