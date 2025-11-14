@@ -1614,37 +1614,38 @@
             }
             
             // This function would call your backend to create a Checkout Session
-            async function createCheckoutSession(price) {
-                // In a real implementation, you would make a fetch request to your backend
-                // For demo purposes, we'll return a mock session ID
-                
-                // Example of what your backend would do:
-                /*
-                const response = await fetch('/create-checkout-session', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        price: price,
-                        productName: 'Business Process Consultation',
-                        successUrl: `${window.location.origin}/success.html`,
-                        cancelUrl: `${window.location.origin}/cancel.html`,
-                    }),
-                });
-                
-                const { sessionId } = await response.json();
-                return sessionId;
-                */
-                
-                // For demo, we'll simulate a successful response with a timeout
-                return new Promise((resolve) => {
-                    setTimeout(() => {
-                        // This would be a real session ID from Stripe in production
-                        resolve('cs_test_1234567890abcdefghijklmnopqrstuvwxyz');
-                    }, 1000);
-                });
-            }
+            // This function calls your backend to create a Checkout Session
+async function createCheckoutSession(price) {
+    try {
+        // Get the base URL (works for both localhost and Vercel deployment)
+        const baseUrl = window.location.origin;
+        
+        const response = await fetch(`${baseUrl}/create-checkout-session`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                price: price,
+                productName: 'Business Process Consultation',
+                successUrl: `${baseUrl}/success.html`,
+                cancelUrl: `${baseUrl}/cancel.html`,
+            }),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to create checkout session');
+        }
+
+        const { sessionId } = await response.json();
+        return sessionId;
+        
+    } catch (error) {
+        console.error('Error creating checkout session:', error);
+        throw error;
+    }
+}
             
             function showNotification(message, type) {
                 notification.textContent = message;
