@@ -20,29 +20,31 @@ const transporter = nodemailer.createTransport({
 
 // Create Stripe checkout session
 app.post('/create-checkout-session', async (req, res) => {
-  const { items, customerEmail } = req.body;
+  const { price, productName, successUrl, cancelUrl } = req.body;
   
   try {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
-      line_items: items.map(item => ({
-        price_data: {
-          currency: 'usd',
-          product_data: {
-            name: item.name,
+      line_items: [
+        {
+          price_data: {
+            currency: 'usd',
+            product_data: {
+              name: productName,
+            },
+            unit_amount: Math.round(price * 100), // Convert to cents
           },
-          unit_amount: Math.round(item.price * 100), // Convert to cents
+          quantity: 1,
         },
-        quantity: 1,
-      })),
+      ],
       mode: 'payment',
-      success_url: `${process.env.CLIENT_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.CLIENT_URL}/cancel`,
-      customer_email: customerEmail,
+      success_url: successUrl || `${req.headers.origin}/success.html`,
+      cancel_url: cancelUrl || `${req.headers.origin}/cancel.html`,
     });
 
-    res.json({ id: session.id });
+    res.json({ sessionId: session.id }); // Make sure this matches what HTML expects
   } catch (error) {
+    console.error('Stripe error:', error);
     res.status(500).json({ error: error.message });
   }
 });
