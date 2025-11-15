@@ -5,16 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment Cancelled - CoreTech BPO</title>
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0F172A, #1E293B);
-            color: white;
+        * {
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0F172A, #1E293B);
+            color: #F8FAFC;
             min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
         }
         
         .cancel-container {
@@ -22,20 +27,23 @@
             padding: 3rem;
             border-radius: 20px;
             text-align: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
             max-width: 500px;
-            width: 90%;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
         
         .cancel-icon {
             font-size: 4rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
         
         h1 {
-            color: #EF4444;
+            font-size: 2.5rem;
             margin-bottom: 1rem;
+            background: linear-gradient(to right, #EF4444, #F59E0B);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
         p {
@@ -48,27 +56,40 @@
             background: linear-gradient(135deg, #2563EB, #3B82F6);
             color: white;
             padding: 1rem 2rem;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            cursor: pointer;
+            border-radius: 50px;
             text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
             display: inline-block;
-            transition: transform 0.3s;
+            margin: 0.5rem;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #3B82F6;
+            color: #3B82F6;
         }
         
         .btn:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
+        }
+        
+        .btn-outline:hover {
+            background: rgba(59, 130, 246, 0.1);
         }
     </style>
 </head>
 <body>
     <div class="cancel-container">
-        <div class="cancel-icon">❌</div>
+        <div class="cancel-icon">😔</div>
         <h1>Payment Cancelled</h1>
-        <p>Your payment was cancelled. No charges have been made to your account.</p>
-        <p>If you encountered any issues, please try again or contact support.</p>
-        <a href="/" class="btn">Return to Home</a>
+        <p>Your payment was cancelled. No charges have been made to your account. If you encountered any issues, please try again or contact our support team.</p>
+        
+        <div>
+            <a href="/" class="btn">Return to Homepage</a>
+            <a href="/#consultation" class="btn btn-outline">Try Again</a>
+        </div>
     </div>
 </body>
 </html>
