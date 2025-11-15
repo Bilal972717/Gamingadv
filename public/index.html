@@ -1524,41 +1524,38 @@
             }
         }
         
-        async function createCheckoutSession(price) {
-            try {
-                console.log('📤 Sending request to backend...');
-                
-                const response = await fetch('/create-checkout-session', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        price: price,
-                        productName: 'Business Process Consultation'
-                    }),
-                });
+        // This function calls your backend to create a Checkout Session
+async function createCheckoutSession(price) {
+    try {
+        // Get the base URL
+        const baseUrl = window.location.origin;
+        
+        const response = await fetch(`${baseUrl}/api/create-checkout-session`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                price: price,
+                productName: 'Business Process Consultation',
+                successUrl: `${baseUrl}/success.html`,
+                cancelUrl: `${baseUrl}/cancel.html`,
+            }),
+        });
 
-                console.log('📥 Response status:', response.status);
-                
-                const data = await response.json();
-                console.log('📦 Response data:', data);
-                
-                if (!response.ok) {
-                    throw new Error(data.error || `Server error: ${response.status}`);
-                }
-                
-                if (!data.sessionId) {
-                    throw new Error('No session ID received from server');
-                }
-                
-                return data.sessionId;
-                
-            } catch (error) {
-                console.error('❌ Create session error:', error);
-                throw error;
-            }
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to create checkout session');
         }
+
+        const { sessionId } = await response.json();
+        return sessionId;
+        
+    } catch (error) {
+        console.error('Error creating checkout session:', error);
+        throw error;
+    }
+}
         
         function showNotification(message, type) {
             notification.textContent = message;
