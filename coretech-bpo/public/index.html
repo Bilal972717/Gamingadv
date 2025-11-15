@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoreTech BPO | Business Consultation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        :root {
+            --primary: #2563EB;
+            --primary-dark: #1D4ED8;
+            --primary-light: #3B82F6;
+            --secondary: #059669;
+            --dark: #1E293B;
+            --darker: #0F172A;
+            --light: #F8FAFC;
+            --gray: #E2E8F0;
+            --gray-dark: #94A3B8;
+            --success: #10B981;
+            --gradient: linear-gradient(135deg, var(--primary), var(--primary-light));
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            background-color: var(--darker);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Header & Navigation */
+        header {
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        header.scrolled {
+            padding: 0.7rem 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .logo-icon {
+            margin-right: 10px;
+            font-size: 2rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+        
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: var(--gradient);
+            transition: width 0.3s;
+        }
+        
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+        
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.9)), 
+                        url('https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 50%, rgba(37, 99, 235, 0.15), transparent 50%),
+                        radial-gradient(circle at 70% 20%, rgba(5, 150, 105, 0.1), transparent 50%);
+            z-index: -1;
+        }
+        
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #fff, var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            color: var(--gray-dark);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: var(--gradient);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(37, 99, 235, 0.4);
+        }
+        
+        /* Consultation Section */
+        .consultation-section {
+            padding: 8rem 2rem;
+            background: var(--dark);
+            position: relative;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            opacity: 0;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            color: var(--gray-dark);
+            max-width: 600px;
+            margin: 0 auto 4rem;
+            opacity: 0;
+        }
+        
+        .consultation-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+        
+        .consultation-info {
+            background: rgba(30, 41, 59, 0.7);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .consultation-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .consultation-icon {
+            font-size: 3rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .consultation-title {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .consultation-subtitle {
+            color: var(--gray-dark);
+        }
+        
+        .consultation-image {
+            width: 100%;
+            height: 200px;
+            background: var(--gradient);
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .consultation-image:after {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: translateX(-100%) rotate(45deg);
+            transition: transform 0.6s;
+        }
+        
+        .consultation-info:hover .consultation-image:after {
+            transform: translateX(100%) rotate(45deg);
+        }
+        
+        .consultation-image img {
+            max-width: 80%;
+            max-height: 80%;
+            object-fit: contain;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
+        }
+        
+        .consultation-description {
+            color: var(--gray-dark);
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+        
+        .consultation-features {
+            margin-bottom: 2rem;
+        }
+        
+        .consultation-features h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+        }
+        
+        .consultation-features ul {
+            list-style: none;
+        }
+        
+        .consultation-features li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+        }
+        
+        .consultation-features li:last-child {
+            border-bottom: none;
+        }
+        
+        .consultation-features li span {
+            background: var(--primary);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 1rem;
+        }
+        
+        /* Sticky Buy Now Section - ENHANCED */
+        .sticky-buy-now {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 380px;
+            background: rgba(30, 41, 59, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(37, 99, 235, 0.3);
+            z-index: 900;
+            transition: all 0.4s ease;
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .sticky-buy-now.hidden {
+            transform: translateY(150%);
+            opacity: 0;
+        }
+        
+        .sticky-buy-now.pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), 0 0 0 0 rgba(37, 99, 235, 0.7);
+            }
+            70% {
+                box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), 0 0 0 15px rgba(37, 99, 235, 0);
+            }
+            100% {
+                box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4), 0 0 0 0 rgba(37, 99, 235, 0);
+            }
+        }
+        
+        .sticky-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .sticky-title-container {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .sticky-icon {
+            font-size: 1.8rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .sticky-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+        
+        .sticky-close {
+            background: none;
+            border: none;
+            color: var(--gray-dark);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .sticky-close:hover {
+            color: var(--light);
+        }
+        
+        .price-display {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding: 0.8rem;
+            background: rgba(15, 23, 42, 0.7);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .price-label {
+            display: block;
+            font-size: 0.9rem;
+            color: var(--gray-dark);
+            margin-bottom: 0.3rem;
+        }
+        
+        .price-amount {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .price-input-container {
+            margin-bottom: 1.5rem;
+        }
+        
+        .price-input-wrapper {
+            position: relative;
+        }
+        
+        .price-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            background: rgba(15, 23, 42, 0.7);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+            font-size: 1.2rem;
+            color: var(--light);
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        
+        .price-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+        }
+        
+        .currency-symbol {
+            position: absolute;
+            left: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-light);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        
+        .terms-checkbox {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+            padding: 0.8rem;
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 8px;
+        }
+        
+        .terms-checkbox input {
+            margin-right: 10px;
+            margin-top: 3px;
+            accent-color: var(--primary);
+        }
+        
+        .terms-text {
+            font-size: 0.85rem;
+            color: var(--gray-dark);
+            line-height: 1.4;
+        }
+        
+        .terms-text a {
+            color: var(--primary-light);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .terms-text a:hover {
+            text-decoration: underline;
+        }
+        
+        .buy-now-btn {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 1.2rem 1.5rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.7rem;
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
+            letter-spacing: 0.5px;
+        }
+        
+        .buy-now-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(37, 99, 235, 0.5);
+        }
+        
+        .buy-now-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .buy-now-btn:disabled {
+            background: var(--gray-dark);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .secure-notice {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            color: var(--gray-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        /* Process Section */
+        .process {
+            padding: 8rem 2rem;
+            background: var(--darker);
+        }
+        
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .process-step {
+            text-align: center;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 1.5rem;
+        }
+        
+        .step-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .step-desc {
+            color: var(--gray-dark);
+        }
+        
+        /* Testimonials */
+        .testimonials {
+            padding: 8rem 2rem;
+            background: var(--dark);
+        }
+        
+        .testimonials-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .testimonial-card {
+            background: rgba(30, 41, 59, 0.7);
+            padding: 3rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .testimonial-text {
+            font-size: 1.2rem;
+            font-style: italic;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+            position: relative;
+        }
+        
+        .testimonial-text:before {
+            content: '"';
+            font-size: 4rem;
+            position: absolute;
+            top: -1rem;
+            left: -1.5rem;
+            color: var(--primary);
+            opacity: 0.3;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .author-info h4 {
+            font-weight: 600;
+        }
+        
+        .author-info p {
+            color: var(--gray-dark);
+            font-size: 0.9rem;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--darker);
+            padding: 5rem 2rem 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+        }
+        
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .footer-about {
+            color: var(--gray-dark);
+            margin-bottom: 1.5rem;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+        
+        .footer-links a {
+            display: block;
+            color: var(--gray-dark);
+            margin-bottom: 0.8rem;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary-light);
+        }
+        
+        .copyright {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+            color: var(--gray-dark);
+        }
+        
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            z-index: 10000;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            transform: translateX(100%);
+            transition: transform 0.3s;
+        }
+        
+        .notification.success {
+            background: var(--success);
+        }
+        
+        .notification.error {
+            background: var(--secondary);
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            display: none;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Modal Content */
+        .modal {
+            background: var(--dark);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform: translateY(30px) scale(0.95);
+            opacity: 0;
+            transition: all 0.4s ease;
+        }
+        
+        .modal-overlay.active .modal {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
+        
+        .modal-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(15, 23, 42, 0.7);
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--gray-dark);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-close:hover {
+            color: var(--light);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .modal-body {
+            padding: 2rem;
+            max-height: calc(80vh - 120px);
+            overflow-y: auto;
+        }
+        
+        .modal-section {
+            margin-bottom: 2rem;
+        }
+        
+        .modal-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .modal-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--primary-light);
+            font-weight: 600;
+        }
+        
+        .modal-section p {
+            color: var(--gray-dark);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        
+        .modal-section ul {
+            color: var(--gray-dark);
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .modal-section li {
+            margin-bottom: 0.5rem;
+            line-height: 1.5;
+        }
+        
+        .modal-footer {
+            padding: 1.5rem 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: flex-end;
+            background: rgba(15, 23, 42, 0.5);
+        }
+        
+        .modal-agree-btn {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .modal-agree-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+        }
+        
+        .terms-highlight {
+            background: rgba(37, 99, 235, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+            margin: 1.5rem 0;
+        }
+        
+        .terms-highlight p {
+            color: var(--light);
+            font-weight: 500;
+            margin: 0;
+        }
+        
+        /* Scrollbar styling for modal */
+        .modal-body::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .modal-body::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+        
+        .modal-body::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 3px;
+        }
+        
+        .modal-body::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-light);
+        }
+        
+        /* Animations */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .floating {
+            animation: float 5s ease-in-out infinite;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .consultation-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .sticky-buy-now {
+                left: 50%;
+                right: auto;
+                transform: translateX(-50%);
+                width: 90%;
+                max-width: 400px;
+            }
+            
+            .sticky-buy-now.hidden {
+                transform: translateX(-50%) translateY(150%);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .consultation-info {
+                padding: 2rem;
+            }
+            
+            .sticky-buy-now {
+                padding: 1.5rem;
+            }
+            
+            .modal {
+                width: 95%;
+                max-height: 90vh;
+            }
+            
+            .modal-header,
+            .modal-body,
+            .modal-footer {
+                padding: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header id="header">
+        <nav>
+            <div class="logo">
+                <span class="logo-icon">⚙️</span>
+                <span>CoreTech BPO</span>
+            </div>
+            <div class="nav-links">
+                <a href="#consultation">Consultation</a>
+                <a href="#process">Process</a>
+                <a href="#testimonials">Testimonials</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <h1>Strategic Business Consultation</h1>
+            <p>Transform your business operations with our expert consultation services. You decide the value of our expertise with our unique dynamic pricing model.</p>
+            <a href="#consultation" class="cta-button">Get Consultation</a>
+        </div>
+    </section>
+
+    <section class="consultation-section" id="consultation">
+        <h2 class="section-title">Expert Business Consultation</h2>
+        <p class="section-subtitle">Professional guidance to optimize your business processes and maximize efficiency</p>
+        
+        <div class="consultation-container">
+            <div class="consultation-info floating">
+                <div class="consultation-header">
+                    <div class="consultation-icon">📈</div>
+                    <div>
+                        <h3 class="consultation-title">Business Process Consultation</h3>
+                        <p class="consultation-subtitle">Comprehensive analysis and optimization strategy</p>
+                    </div>
+                </div>
+                
+                <div class="consultation-image">
+                    <img src="https://cdn-icons-png.flaticon.com/512/4054/4054617.png" alt="Business Consultation">
+                </div>
+                
+                <p class="consultation-description">Our expert consultants analyze your current processes and provide actionable recommendations to streamline operations, reduce costs, and improve efficiency. With our unique dynamic pricing model, you determine the value of our expertise based on your business needs and budget.</p>
+                
+                <div class="consultation-features">
+                    <h3>Consultation Includes:</h3>
+                    
+                    <ul>
+                        <li>
+                            <span></span>
+                            Comprehensive process analysis and assessment
+                        </li>
+                        <li>
+                            <span></span>
+                            Efficiency and cost-saving recommendations
+                        </li>
+                        <li>
+                            <span></span>
+                            Technology integration assessment
+                        </li>
+                        <li>
+                            <span></span>
+                            Customized implementation roadmap
+                        </li>
+                        <li>
+                            <span></span>
+                            Ongoing support and follow-up sessions
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="consultation-info">
+                <div class="consultation-header">
+                    <div class="consultation-icon">🚀</div>
+                    <div>
+                        <h3 class="consultation-title">How It Works</h3>
+                        <p class="consultation-subtitle">Simple process, powerful results</p>
+                    </div>
+                </div>
+                
+                <div class="consultation-features">
+                    <ul>
+                        <li>
+                            <span></span>
+                            <strong>Initial Assessment:</strong> We analyze your current business processes
+                        </li>
+                        <li>
+                            <span></span>
+                            <strong>Strategy Development:</strong> Create a customized optimization plan
+                        </li>
+                        <li>
+                            <span></span>
+                            <strong>Implementation Support:</strong> Guide you through the execution phase
+                        </li>
+                        <li>
+                            <span></span>
+                            <strong>Performance Monitoring:</strong> Track results and make adjustments
+                        </li>
+                        <li>
+                            <span></span>
+                            <strong>Ongoing Optimization:</strong> Continuous improvement for lasting results
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="what-you-get" style="margin-top: 2rem;">
+                    <h3>What You'll Receive:</h3>
+                    
+                    <ul>
+                        <li>
+                            <span></span>
+                            2-hour comprehensive consultation session
+                        </li>
+                        <li>
+                            <span></span>
+                            Detailed analysis report with recommendations
+                        </li>
+                        <li>
+                            <span></span>
+                            Customized action plan for implementation
+                        </li>
+                        <li>
+                            <span></span>
+                            30-day follow-up support and guidance
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enhanced Sticky Buy Now Section -->
+    <div class="sticky-buy-now hidden" id="stickyBuyNow">
+        <div class="sticky-header">
+            <div class="sticky-title-container">
+                <div class="sticky-icon">💰</div>
+                <div class="sticky-title">Dynamic Pricing</div>
+            </div>
+            <button class="sticky-close" id="stickyClose">✕</button>
+        </div>
+        
+        <div class="price-display">
+            <div class="price-label">Your Investment</div>
+            <div class="price-amount">$<span id="stickyPriceDisplay"></span></div>
+        </div>
+        
+        <div class="price-input-container">
+            <div class="price-input-wrapper">
+                <span class="currency-symbol">$</span>
+                <input type="number" id="stickyPriceInput" class="price-input" min="1" step="1">
+            </div>
+        </div>
+        
+        <div class="terms-checkbox">
+            <input type="checkbox" id="stickyTermsCheckbox">
+            <label for="stickyTermsCheckbox" class="terms-text">
+                I agree to the <a href="#" id="termsLink">Terms and Conditions</a>
+            </label>
+        </div>
+        
+        <button class="buy-now-btn" id="stickyBuyNowBtn" disabled>
+            <span>Buy Now</span>
+            <span>🚀</span>
+        </button>
+        
+        <div class="secure-notice">
+            <span>🔒</span>
+            <span>Secure payment powered by Stripe</span>
+        </div>
+    </div>
+
+    <!-- Terms & Conditions Modal -->
+    <div class="modal-overlay" id="termsModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Terms & Conditions</h2>
+                <button class="modal-close" id="modalClose">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-section">
+                    <h3>Payment Terms</h3>
+                    <div class="terms-highlight">
+                        <p>By proceeding with this payment, you explicitly agree to pay the entered amount and acknowledge that this is a non-refundable payment for consultation services.</p>
+                    </div>
+                    <p>Please read these terms carefully before proceeding with your payment. By completing the transaction, you accept and agree to be bound by these terms.</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h3>Service Agreement</h3>
+                    <p>CoreTech BPO agrees to provide business consultation services as described in the service description. The scope and deliverables will be based on the consultation package selected.</p>
+                    <ul>
+                        <li>Consultation sessions will be scheduled within 5 business days of payment confirmation</li>
+                        <li>All sessions are conducted remotely via video conference</li>
+                        <li>Session recordings and materials will be provided within 48 hours after each session</li>
+                        <li>Follow-up support is available for 30 days following the consultation</li>
+                    </ul>
+                </div>
+                
+                <div class="modal-section">
+                    <h3>Payment Authorization</h3>
+                    <p>By completing this transaction, you authorize CoreTech BPO to charge the specified amount to your selected payment method. You confirm that:</p>
+                    <ul>
+                        <li>You are authorized to use the payment method provided</li>
+                        <li>The payment amount is correct and reflects the value you assign to the consultation services</li>
+                        <li>You understand this is a non-refundable transaction</li>
+                        <li>You have read and agree to these terms voluntarily</li>
+                    </ul>
+                </div>
+                
+                <div class="modal-section">
+                    <h3>Refund Policy</h3>
+                    <p>All payments for consultation services are final and non-refundable. Due to the nature of digital services and immediate allocation of resources, we do not offer refunds or cancellations once payment is processed.</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h3>Intellectual Property</h3>
+                    <p>All materials, documentation, and recommendations provided during the consultation remain the intellectual property of CoreTech BPO. You are granted a limited license to use these materials for your internal business purposes.</p>
+                </div>
+                
+                <div class="modal-section">
+                    <h3>Confidentiality</h3>
+                    <p>Both parties agree to maintain the confidentiality of proprietary information shared during the consultation. CoreTech BPO will not disclose your business information to third parties without your consent.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-agree-btn" id="modalAgree">I Understand and Agree</button>
+            </div>
+        </div>
+    </div>
+
+    <section class="process" id="process">
+        <h2 class="section-title">Our Engagement Process</h2>
+        <p class="section-subtitle">Simple steps to transform your business operations</p>
+        
+        <div class="process-steps">
+            <div class="process-step">
+                <div class="step-number">1</div>
+                <h3 class="step-title">Discovery & Assessment</h3>
+                <p class="step-desc">We analyze your current processes and identify improvement opportunities</p>
+            </div>
+            <div class="process-step">
+                <div class="step-number">2</div>
+                <h3 class="step-title">Strategy Development</h3>
+                <p class="step-desc">Create a customized optimization plan tailored to your business needs</p>
+            </div>
+            <div class="process-step">
+                <div class="step-number">3</div>
+                <h3 class="step-title">Implementation</h3>
+                <p class="step-desc">Execute the plan with our expert team and proven methodologies</p>
+            </div>
+            <div class="process-step">
+                <div class="step-number">4</div>
+                <h3 class="step-title">Optimization & Support</h3>
+                <p class="step-desc">Continuous monitoring and improvement with ongoing support</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials" id="testimonials">
+        <h2 class="section-title">Client Success Stories</h2>
+        <p class="section-subtitle">Hear from businesses that transformed their operations with CoreTech</p>
+        
+        <div class="testimonials-container">
+            <div class="testimonial-card">
+                <p class="testimonial-text">CoreTech's consultation helped us identify inefficiencies we didn't even know existed. Their dynamic pricing model made expert consultation accessible, and the ROI was evident within the first quarter.</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">RJ</div>
+                    <div class="author-info">
+                        <h4>Robert Johnson</h4>
+                        <p>COO, TechSolutions Inc.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <p class="testimonial-text">The flexible pricing allowed us to get the consultation we needed within our budget. The insights we gained helped us streamline operations and increase productivity by 40%.</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">SC</div>
+                    <div class="author-info">
+                        <h4>Sarah Chen</h4>
+                        <p>Operations Director</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-about">
+                <div class="footer-logo">CoreTech BPO</div>
+                <p class="footer-about">Expert business consultation services with flexible pricing that puts you in control of value.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link">📘</a>
+                    <a href="#" class="social-link">🐦</a>
+                    <a href="#" class="social-link">📷</a>
+                    <a href="#" class="social-link">💼</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Services</h3>
+                <div class="footer-links">
+                    <a href="#">Business Consultation</a>
+                    <a href="#">Process Optimization</a>
+                    <a href="#">Strategic Planning</a>
+                    <a href="#">Performance Analysis</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Company</h3>
+                <div class="footer-links">
+                    <a href="#">About Us</a>
+                    <a href="#">Our Team</a>
+                    <a href="#">Careers</a>
+                    <a href="#">Contact</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms & Conditions</a>
+                    <a href="#">Service Agreement</a>
+                    <a href="#">GDPR Compliance</a>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2023 CoreTech Business Process Outsourcing. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // Initialize GSAP animations
+        gsap.registerPlugin(ScrollTrigger);
+        
+        // Initialize Stripe
+        const stripe = Stripe('pk_test_51ST4UF40HwZJ2DP8NQG4YVplJ1IFLaGljQeT2XbxO8WPJJXQSact4mjkXHM7sIOLAPACTK9kZ1jEI1Vhk64ugGSO00hLojOIcU'); // Replace with your actual Stripe publishable key
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Header scroll effect
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+            
+            // Hero animations
+            gsap.to('.hero h1', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                delay: 0.3
+            });
+            
+            gsap.to('.hero p', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                delay: 0.5
+            });
+            
+            gsap.to('.cta-button', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                delay: 0.7
+            });
+            
+            // Section animations
+            gsap.utils.toArray('.section-title, .section-subtitle').forEach(el => {
+                gsap.fromTo(el, {
+                    opacity: 0,
+                    y: 30
+                }, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1,
+                    scrollTrigger: {
+                        trigger: el,
+                        start: 'top 80%',
+                        end: 'bottom 20%',
+                        toggleActions: 'play none none reverse'
+                    }
+                });
+            });
+            
+            // Consultation info animation
+            gsap.fromTo('.consultation-info', {
+                opacity: 0,
+                y: 30
+            }, {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                scrollTrigger: {
+                    trigger: '.consultation-info',
+                    start: 'top 80%',
+                    end: 'bottom 20%',
+                    toggleActions: 'play none none reverse'
+                }
+            });
+            
+            // Process steps animation
+            gsap.utils.toArray('.process-step').forEach((step, i) => {
+                gsap.fromTo(step, {
+                    opacity: 0,
+                    y: 30
+                }, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    delay: i * 0.2,
+                    scrollTrigger: {
+                        trigger: step,
+                        start: 'top 80%',
+                        end: 'bottom 20%',
+                        toggleActions: 'play none none reverse'
+                    }
+                });
+            });
+            
+            // Testimonial cards animation
+            gsap.utils.toArray('.testimonial-card').forEach((card, i) => {
+                gsap.fromTo(card, {
+                    opacity: 0,
+                    y: 30
+                }, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    delay: i * 0.3,
+                    scrollTrigger: {
+                        trigger: card,
+                        start: 'top 80%',
+                        end: 'bottom 20%',
+                        toggleActions: 'play none none reverse'
+                    }
+                });
+            });
+            
+            // Enhanced sticky buy now functionality
+            const stickyBuyNow = document.getElementById('stickyBuyNow');
+            const stickyClose = document.getElementById('stickyClose');
+            const stickyPriceInput = document.getElementById('stickyPriceInput');
+            const stickyPriceDisplay = document.getElementById('stickyPriceDisplay');
+            const stickyTermsCheckbox = document.getElementById('stickyTermsCheckbox');
+            const stickyBuyNowBtn = document.getElementById('stickyBuyNowBtn');
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            const notification = document.getElementById('notification');
+            
+            // Modal Elements
+            const termsModal = document.getElementById('termsModal');
+            const termsLink = document.getElementById('termsLink');
+            const modalClose = document.getElementById('modalClose');
+            const modalAgree = document.getElementById('modalAgree');
+            
+            // Show sticky buy now after scrolling past hero
+            ScrollTrigger.create({
+                trigger: ".consultation-section",
+                start: "top 80%",
+                onEnter: () => {
+                    stickyBuyNow.classList.remove('hidden');
+                    // Add pulse animation for attention
+                    stickyBuyNow.classList.add('pulse');
+                    setTimeout(() => {
+                        stickyBuyNow.classList.remove('pulse');
+                    }, 6000);
+                },
+                onLeaveBack: () => {
+                    stickyBuyNow.classList.add('hidden');
+                }
+            });
+            
+            // Close sticky buy now
+            stickyClose.addEventListener('click', function() {
+                stickyBuyNow.classList.add('hidden');
+            });
+            
+            // Update price display when input changes
+            stickyPriceInput.addEventListener('input', function() {
+                const price = this.value;
+                stickyPriceDisplay.textContent = price;
+                toggleBuyNowButton();
+            });
+            
+            // Event Listeners
+            stickyTermsCheckbox.addEventListener('change', toggleBuyNowButton);
+            stickyBuyNowBtn.addEventListener('click', initiateStripeCheckout);
+            
+            // Modal functionality
+            // Open modal when Terms link is clicked
+            termsLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                termsModal.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            });
+            
+            // Close modal when close button is clicked
+            modalClose.addEventListener('click', function() {
+                termsModal.classList.remove('active');
+                document.body.style.overflow = ''; // Restore scrolling
+            });
+            
+            // Close modal when overlay is clicked
+            termsModal.addEventListener('click', function(e) {
+                if (e.target === termsModal) {
+                    termsModal.classList.remove('active');
+                    document.body.style.overflow = ''; // Restore scrolling
+                }
+            });
+            
+            // Agree button functionality
+            modalAgree.addEventListener('click', function() {
+                // Check the terms checkbox
+                stickyTermsCheckbox.checked = true;
+                toggleBuyNowButton();
+                
+                // Close the modal
+                termsModal.classList.remove('active');
+                document.body.style.overflow = ''; // Restore scrolling
+                
+                // Show confirmation
+                showNotification('Terms and conditions accepted', 'success');
+            });
+            
+            // Close modal with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && termsModal.classList.contains('active')) {
+                    termsModal.classList.remove('active');
+                    document.body.style.overflow = ''; // Restore scrolling
+                }
+            });
+            
+            // Functions
+            function toggleBuyNowButton() {
+                const price = parseFloat(stickyPriceInput.value);
+                const termsAgreed = stickyTermsCheckbox.checked;
+                
+                stickyBuyNowBtn.disabled = isNaN(price) || price <= 0 || !termsAgreed;
+            }
+            
+            async function initiateStripeCheckout() {
+                const price = parseFloat(stickyPriceInput.value);
+                
+                if (isNaN(price) || price <= 0) {
+                    showNotification('Please enter a valid investment amount', 'error');
+                    return;
+                }
+                
+                if (!stickyTermsCheckbox.checked) {
+                    showNotification('Please agree to the Terms and Conditions', 'error');
+                    return;
+                }
+                
+                // Show loading
+                loadingOverlay.style.display = 'flex';
+                
+                try {
+                    // In a real implementation, you would call your backend to create a Checkout Session
+                    // For demo purposes, we'll simulate this with a timeout
+                    
+                    // Simulate API call to create Checkout Session
+                    setTimeout(async () => {
+                        // This would be the response from your backend
+                        const sessionId = await createCheckoutSession(price);
+                        
+                        // Redirect to Stripe Checkout
+                        const result = await stripe.redirectToCheckout({
+                            sessionId: sessionId
+                        });
+                        
+                        if (result.error) {
+                            showNotification('Error redirecting to payment: ' + result.error.message, 'error');
+                            loadingOverlay.style.display = 'none';
+                        }
+                    }, 1500);
+                    
+                } catch (error) {
+                    console.error('Error:', error);
+                    showNotification('An error occurred while processing your request', 'error');
+                    loadingOverlay.style.display = 'none';
+                }
+            }
+            
+            // This function calls your backend to create a Checkout Session
+async function createCheckoutSession(price) {
+    try {
+        // Get the base URL (works for both localhost and Vercel deployment)
+        const baseUrl = window.location.origin;
+        
+        const response = await fetch(`${baseUrl}/create-checkout-session`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                price: price,
+                productName: 'Business Process Consultation',
+                successUrl: `${baseUrl}/success.html`,
+                cancelUrl: `${baseUrl}/cancel.html`,
+            }),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to create checkout session');
+        }
+
+        const { sessionId } = await response.json();
+        return sessionId;
+        
+    } catch (error) {
+        console.error('Error creating checkout session:', error);
+        throw error;
+    }
+}
+            
+            function showNotification(message, type) {
+                notification.textContent = message;
+                notification.className = `notification ${type}`;
+                notification.classList.add('show');
+                
+                // Remove after 3 seconds
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>
