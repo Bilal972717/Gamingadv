@@ -3,37 +3,55 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 module.exports = async (req, res) => {
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
-  // Handle preflight requests
+  // Handle preflight OPTIONS request
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
 
-  // Only allow POST requests
+  // Only allow POST method
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    return res.status(405).json({ 
+      error: 'Method not allowed',
+      message: 'Only POST requests are supported' 
+    });
   }
 
   try {
-    const { price, productName, successUrl, cancelUrl } = req.body;
+    let body;
+    try {
+      body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+    } catch (parseError) {
+      return res.status(400).json({ 
+        error: 'Invalid JSON in request body' 
+      });
+    }
 
-    // Validate input
+    const { price, productName, successUrl, cancelUrl } = body;
+
+    console.log('Received request with price:', price);
+
+    // Validate required fields
     if (!price || price <= 0) {
       return res.status(400).json({ 
-        error: 'Valid price is required and must be greater than 0' 
+        error: 'Valid price is required and must be greater than 0',
+        received: price
       });
     }
 
-    // Check if Stripe secret key is configured
+    // Validate Stripe secret key
     if (!process.env.STRIPE_SECRET_KEY) {
-      console.error('STRIPE_SECRET_KEY is not configured');
+      console.error('STRIPE_SECRET_KEY environment variable is not set');
       return res.status(500).json({ 
-        error: 'Server configuration error' 
+        error: 'Server configuration error: Stripe secret key missing' 
       });
     }
 
+    // Determine base URL for success/cancel URLs
+    const baseUrl = req.headers.origin || req.headers.referer || 'https://' + req.headers.host;
+    
     // Create Stripe checkout session
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -51,15 +69,15 @@ module.exports = async (req, res) => {
         },
       ],
       mode: 'payment',
-      success_url: successUrl || `${getBaseUrl(req)}/success.html`,
-      cancel_url: cancelUrl || `${getBaseUrl(req)}/cancel.html`,
+      success_url: successUrl || `${baseUrl}/success.html`,
+      cancel_url: cancelUrl || `${baseUrl}/cancel.html`,
       metadata: {
         product_name: productName || 'Business Consultation',
         customer_price: price.toString()
       }
     });
 
-    console.log('Checkout session created successfully:', session.id);
+    console.log('✅ Checkout session created successfully:', session.id);
     
     return res.status(200).json({ 
       sessionId: session.id,
@@ -67,18 +85,12 @@ module.exports = async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Stripe API error:', error);
+    console.error('❌ Stripe API error:', error);
     
     return res.status(500).json({ 
       error: error.message || 'Failed to create checkout session',
-      code: error.type || 'unknown_error'
+      code: error.type || 'unknown_error',
+      details: 'Check Stripe secret key and request parameters'
     });
   }
 };
-
-// Helper function to get base URL
-function getBaseUrl(req) {
-  const host = req.headers['x-forwarded-host'] || req.headers['host'];
-  const protocol = req.headers['x-forwarded-proto'] || 'https';
-  return `${protocol}://${host}`;
-}
