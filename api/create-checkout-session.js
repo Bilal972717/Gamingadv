@@ -1,7 +1,7 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 module.exports = async (req, res) => {
-  // Set CORS headers
+  // Handle CORS
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
@@ -10,21 +10,21 @@ module.exports = async (req, res) => {
     'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
   );
 
-  // Handle OPTIONS request for CORS
+  // Handle OPTIONS request
   if (req.method === 'OPTIONS') {
     res.status(200).end();
     return;
   }
 
-  // Only allow POST requests
+  // Only allow POST
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
-    const { price, productName, successUrl, cancelUrl } = req.body;
+    const { price, productName } = req.body;
     
-    console.log('Creating checkout session for:', { price, productName });
+    console.log('Received request:', { price, productName });
     
     // Validate input
     if (!price || price <= 0) {
@@ -41,7 +41,7 @@ module.exports = async (req, res) => {
             currency: 'usd',
             product_data: {
               name: productName || 'Business Process Consultation',
-              description: 'Expert business consultation service with dynamic pricing',
+              description: 'Expert business consultation service',
             },
             unit_amount: Math.round(price * 100), // Convert to cents
           },
@@ -49,34 +49,20 @@ module.exports = async (req, res) => {
         },
       ],
       mode: 'payment',
-      success_url: successUrl || `${getClientURL(req)}/success.html?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: cancelUrl || `${getClientURL(req)}/cancel.html`,
-      customer_creation: 'if_required',
-      metadata: {
-        product_name: productName || 'Business Consultation',
-        customer_price: price.toString()
-      }
+      success_url: `${req.headers.origin || 'https://your-app.vercel.app'}/success.html?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${req.headers.origin || 'https://your-app.vercel.app'}/cancel.html`,
     });
 
-    console.log('Checkout session created:', session.id);
+    console.log('Session created:', session.id);
     
-    res.status(200).json({ 
-      sessionId: session.id,
-      url: session.url 
+    res.json({ 
+      sessionId: session.id
     });
 
   } catch (error) {
-    console.error('Stripe API error:', error);
+    console.error('Stripe error:', error);
     res.status(500).json({ 
-      error: error.message,
-      code: error.code 
+      error: error.message
     });
   }
 };
-
-// Helper function to get client URL
-function getClientURL(req) {
-  const protocol = req.headers['x-forwarded-proto'] || 'https';
-  const host = req.headers['x-forwarded-host'] || req.headers.host;
-  return `${protocol}://${host}`;
-}
