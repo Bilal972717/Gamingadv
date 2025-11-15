@@ -5,16 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment Successful - CoreTech BPO</title>
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0F172A, #1E293B);
-            color: white;
+        * {
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0F172A, #1E293B);
+            color: #F8FAFC;
             min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
         }
         
         .success-container {
@@ -22,20 +27,23 @@
             padding: 3rem;
             border-radius: 20px;
             text-align: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
             max-width: 500px;
-            width: 90%;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
         
         .success-icon {
             font-size: 4rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
         
         h1 {
-            color: #10B981;
+            font-size: 2.5rem;
             margin-bottom: 1rem;
+            background: linear-gradient(to right, #3B82F6, #10B981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
         p {
@@ -48,27 +56,42 @@
             background: linear-gradient(135deg, #2563EB, #3B82F6);
             color: white;
             padding: 1rem 2rem;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            cursor: pointer;
+            border-radius: 50px;
             text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
             display: inline-block;
-            transition: transform 0.3s;
         }
         
         .btn:hover {
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
+        }
+        
+        .contact-info {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .contact-info p {
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
         }
     </style>
 </head>
 <body>
     <div class="success-container">
-        <div class="success-icon">✅</div>
+        <div class="success-icon">🎉</div>
         <h1>Payment Successful!</h1>
-        <p>Thank you for your purchase. Your consultation session has been confirmed. We'll contact you within 24 hours to schedule your session.</p>
-        <p><strong>Check your email for confirmation details.</strong></p>
-        <a href="/" class="btn">Return to Home</a>
+        <p>Thank you for your purchase. Your consultation session has been confirmed. Our team will contact you within 24 hours to schedule your session.</p>
+        <a href="/" class="btn">Return to Homepage</a>
+        
+        <div class="contact-info">
+            <p><strong>Need immediate assistance?</strong></p>
+            <p>Email: support@coretechbpo.com</p>
+            <p>Phone: +1 (555) 123-4567</p>
+        </div>
     </div>
 </body>
 </html>
