@@ -1,38 +1,43 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 module.exports = async (req, res) => {
-  // Handle CORS
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-  );
+  console.log('=== CREATE CHECKOUT SESSION REQUEST ===');
+  console.log('Method:', req.method);
+  console.log('Headers:', req.headers);
+  console.log('Body:', req.body);
 
-  // Handle OPTIONS request
+  // Set CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
   if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
+    console.log('Handling OPTIONS request');
+    return res.status(200).end();
   }
 
-  // Only allow POST
   if (req.method !== 'POST') {
+    console.log('Method not allowed:', req.method);
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
     const { price, productName } = req.body;
     
-    console.log('Received request:', { price, productName });
+    console.log('Processing request - Price:', price, 'Product:', productName);
     
-    // Validate input
     if (!price || price <= 0) {
-      return res.status(400).json({ 
-        error: 'Valid price is required' 
-      });
+      console.log('Invalid price:', price);
+      return res.status(400).json({ error: 'Valid price is required' });
     }
 
+    if (!process.env.STRIPE_SECRET_KEY) {
+      console.log('STRIPE_SECRET_KEY is missing');
+      return res.status(500).json({ error: 'Server configuration error' });
+    }
+
+    console.log('Creating Stripe session...');
+    
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [
@@ -41,9 +46,9 @@ module.exports = async (req, res) => {
             currency: 'usd',
             product_data: {
               name: productName || 'Business Process Consultation',
-              description: 'Expert business consultation service',
+              description: 'Expert business consultation service with dynamic pricing',
             },
-            unit_amount: Math.round(price * 100), // Convert to cents
+            unit_amount: Math.round(price * 100),
           },
           quantity: 1,
         },
@@ -53,16 +58,23 @@ module.exports = async (req, res) => {
       cancel_url: `${req.headers.origin || 'https://your-app.vercel.app'}/cancel.html`,
     });
 
-    console.log('Session created:', session.id);
+    console.log('Stripe session created successfully:', session.id);
     
     res.json({ 
-      sessionId: session.id
+      sessionId: session.id,
+      url: session.url 
     });
 
   } catch (error) {
-    console.error('Stripe error:', error);
+    console.error('STRIPE ERROR DETAILS:');
+    console.error('Error type:', error.type);
+    console.error('Error message:', error.message);
+    console.error('Error stack:', error.stack);
+    
     res.status(500).json({ 
-      error: error.message
+      error: error.message,
+      type: error.type,
+      code: error.code
     });
   }
 };
